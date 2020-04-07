@@ -66,8 +66,52 @@
 * Save changes to filter file
 
 ## Add Transaction Window
+* Name Text Entry
+* Date Label
+* Amount Text Entry
+
+### Name Text Entry
+* Left Click: Give input focus to this
+
+### Date Label
+* Left Click: Open Calendar Widget
+
+User selects date. Result goes into Date Label
+
+### Amount Text Entry
+* Left Click: Give input focus to this
+
+Allow user to enter numbers only. 2 digits after the floating point. First
+entered number starts in the 100ths place. Each new number moves the first
+number one decimal place to the left.
+
+ex. $0.01 -> $0.12 -> $1.23 -> $12.34
 
 ## Add Filter Window
+* Name Text Entry
+* Filter Parameter Type Dropdown
+* Filter Parameter Entry
+* Add Button
+* Cancel Button
+
+### Name Text Entry
+Left Click: Give input focus to this
+
+Allow user to enter text
+
+### Filter Parameter Type Dropdown
+* Left Click: Open dropdown menu
+
+Options:
+1. Name Contains - regular expression search through names
+2. Date Between - find transactions between two dates
+3. Amount Between - find transactions between amounts
+
+### Filter Parameter Entry
+
+### Add Button
+
+### Cancel Button
 
 ## Confirm Window
 
