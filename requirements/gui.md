@@ -6,6 +6,7 @@
 * Add Transaction Button
 * Import Button
 * Export Button
+* Delete Button
 
 #### Add Transaction Button
 * Left Click: invoke Add Transaction Window
@@ -15,6 +16,10 @@
 
 #### Export Button
 * Left Click: Export Procedure
+
+#### Delete Button
+* Left Click: Delete selected transactions ( Transaction rows with Select
+  Checkbox checked)
 
 ### Filter Bar
 * Filter Button Box
@@ -46,6 +51,17 @@
 * Name Table Header
 * Date Table Header
 * Amount Table Header
+* Transaction Table Rows
+
+#### Transaction Table Row
+* Select Checkbox
+* ID Label
+* Name Label
+* Date Label
+* Amount Label
+
+##### Select Checkbox
+Left Click: Check the box and highlight the row
 
 ### Import Procedure
 * Invoke file browser to get file
@@ -89,10 +105,15 @@ ex. $0.01 -> $0.12 -> $1.23 -> $12.34
 
 ## Add Filter Window
 * Name Text Entry
-* Filter Parameter Type Dropdown
-* Filter Parameter Entry
+* Filter Parameter 1
+* Filter Parameter 2
+* Filter Parameter 3
 * Add Button
 * Cancel Button
+
+### Filter Parameter
+* Filter Parameter Type Dropdown
+* Filter Parameter Entry
 
 ### Name Text Entry
 Left Click: Give input focus to this
@@ -108,10 +129,32 @@ Options:
 3. Amount Between - find transactions between amounts
 
 ### Filter Parameter Entry
+Left Click: get input according to Filter Parameter Type selected
 
 ### Add Button
+Left Click: invoke Add Filter Procedure
 
 ### Cancel Button
+Left Click: Close the Add Filter Window
+
+### Add Filter Procedure
+Save the filter and add it to the Filter Button Box
 
 ## Confirm Window
+* Message Label
+* Confirm Button
+* Cancel Button
+
+### Message Label
+Show the confirmation prompt
+
+### Confirm Button
+* Left Click: invoke Confirm Procedure with true
+
+### Cancel Button
+* Left Click: invoke the Confirm Procedure with false
+
+### Confirm Procedure
+Return the status of the operation to the caller (true/false) and close the
+Confirm Window
 
