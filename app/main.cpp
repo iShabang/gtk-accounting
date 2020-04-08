@@ -1,23 +1,23 @@
+#include "Facade.h"
+
 #include <gtk/gtk.h>
 #include <iostream>
 
 int main(int argc, char **argv) {
-  GtkWidget *mainwin;
-  // Initialize i18n support with bindtextdomain(), etc.
 
-  // ...
+  GtkWidget *mainwin;
 
   // Initialize the widget set
   gtk_init(&argc, &argv);
 
-  // Create the main window
-  mainwin = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+  // Initialize application
+  Facade app;
 
-  // Set up our GUI elements
-
-  // ...
+  // Connect gtk signals
+  app.builder().connectSignals();
 
   // Show the application window
+  mainwin = app.builder().getWidget("mainWindow");
   gtk_widget_show_all(mainwin);
 
   // Enter the main event loop, and wait for user interaction
