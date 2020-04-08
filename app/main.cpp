@@ -12,8 +12,7 @@ int main(int argc, char **argv) {
 
   Gtk::Window* window = nullptr;
 
-  facade.builder().getWidget("mainWindow", window);
-  //facade.builder().connectSignals();
+  facade.builder()->get_widget("mainWindow", window);
 
   if (window){
     std::cout << "got window" << std::endl;

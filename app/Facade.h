@@ -3,15 +3,18 @@
 
 #include "Builder.h"
 
+#include <gtkmm/builder.h>
+
 class Facade
 {
     public:
     Facade();
 
-    Builder& builder();
+    Glib::RefPtr<Gtk::Builder> builder();
+
 
     private:
-    Builder m_builder;
+    Glib::RefPtr<Gtk::Builder> m_builder;
 };
 
 #endif // _GTK_ACCOUNTING_APP_FACADE_H_
