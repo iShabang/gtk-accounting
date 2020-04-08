@@ -1,28 +1,29 @@
 #include "Facade.h"
 
-#include <gtk/gtk.h>
 #include <iostream>
+#include <gtkmm/window.h>
+#include <gtkmm/application.h>
 
 int main(int argc, char **argv) {
 
-  GtkWidget *mainwin;
+  auto app = Gtk::Application::create(argc, argv, "gtk-accounting");
 
-  // Initialize the widget set
-  gtk_init(&argc, &argv);
+  Facade facade;
 
-  // Initialize application
-  Facade app;
+  Gtk::Window* window = nullptr;
 
-  // Connect gtk signals
-  app.builder().connectSignals();
+  facade.builder().getWidget("mainWindow", window);
+  //facade.builder().connectSignals();
 
-  // Show the application window
-  mainwin = app.builder().getWidget("mainWindow");
-  gtk_widget_show_all(mainwin);
+  if (window){
+    std::cout << "got window" << std::endl;
+    window->set_default_size(200, 200);
+    app->run(*window);
+  } else {
+    std::cout << "window not found" << std::endl;
+  }
 
-  // Enter the main event loop, and wait for user interaction
-  gtk_main();
+  delete window;
 
-  // The user lost interest
   return 0;
 }

@@ -1,5 +1,5 @@
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(GTK gtk+-3.0 REQUIRED)
+pkg_check_modules(GTK gtkmm-3.0 REQUIRED)
 
 add_executable(gtk-accounting
                main.cpp

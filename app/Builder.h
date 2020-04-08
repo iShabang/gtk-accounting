@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_BUILDER_H_
 #define _GTK_ACCOUNTING_BUILDER_H_
 
-#include <gtk/gtk.h>
+#include <gtkmm/builder.h>
 #include <string>
 
 class Builder {
@@ -14,12 +14,12 @@ class Builder {
     Builder& operator=(const Builder &) = delete;
     Builder& operator=(Builder &&) = delete;
 
-    GtkWidget* getWidget(const std::string &name);
+    void getWidget(const std::string &name, Gtk::Widget* result);
     void connectSignals();
-
+    bool isValid();
 
     private:
-    GtkBuilder* m_builder;
+    Glib::RefPtr<Gtk::Builder> m_builder;
 
 };
 
