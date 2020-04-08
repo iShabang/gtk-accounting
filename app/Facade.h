@@ -1,8 +1,6 @@
 #ifndef _GTK_ACCOUNTING_APP_FACADE_H_
 #define _GTK_ACCOUNTING_APP_FACADE_H_
 
-#include "Builder.h"
-
 #include <gtkmm/builder.h>
 
 class Facade
