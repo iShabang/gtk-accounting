@@ -10,23 +10,22 @@
       <placeholder/>
     </child>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="mainGrid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkGrid">
-            <property name="name">menuBar</property>
+          <object class="GtkGrid" id="menuGrid">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="row_homogeneous">True</property>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="importButton">
                 <property name="label" translatable="yes">Import</property>
-                <property name="name">importBtn</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <signal name="clicked" handler="onButtonClicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -34,9 +33,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="exportButton">
                 <property name="label" translatable="yes">Export</property>
-                <property name="name">exportBtn</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -47,9 +45,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="addTransactionButton">
                 <property name="label" translatable="yes">Add</property>
-                <property name="name">addBtn</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -60,9 +57,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="deleteTransactionButton">
                 <property name="label" translatable="yes">Delete</property>
-                <property name="name">deleteBtn</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -80,15 +76,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="filterBox">
             <property name="name">filterBar</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="margin_bottom">24</property>
             <property name="homogeneous">True</property>
             <child>
-              <object class="GtkBox">
-                <property name="name">filterBtnBox</property>
+              <object class="GtkBox" id="filterItemBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -102,9 +97,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="name">prevBtn</property>
+              <object class="GtkButton" id="previousFilterButton">
+                <property name="label" translatable="yes">Prev</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -116,9 +110,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
-                <property name="label" translatable="yes">button</property>
-                <property name="name">nextBtn</property>
+              <object class="GtkButton" id="nextFilterButton">
+                <property name="label" translatable="yes">Next</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -130,9 +123,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="addFilterButton">
                 <property name="label" translatable="yes">Add</property>
-                <property name="name">addFilterBtn</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -151,7 +143,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkGrid">
+          <object class="GtkGrid" id="tableGrid">
             <property name="name">dataTable</property>
             <property name="visible">True</property>
             <property name="can_focus">False</property>
