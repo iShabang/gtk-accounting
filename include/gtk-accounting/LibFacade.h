@@ -16,6 +16,8 @@ class LibFacade {
   LibFacade& operator=(const LibFacade &) = delete;
   LibFacade& operator=(LibFacade &&) = delete;
 
+  DatabaseInterface& database();
+
   private:
   SqliteImplementation m_database;
 

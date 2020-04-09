@@ -4,4 +4,6 @@ namespace acc {
 
 LibFacade::LibFacade() {}
 
+DatabaseInterface& LibFacade::database() { return m_database; }
+
 }
