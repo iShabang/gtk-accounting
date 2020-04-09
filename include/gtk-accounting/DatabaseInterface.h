@@ -14,7 +14,10 @@ class DatabaseInterface {
   public:
   virtual ~DatabaseInterface() {}
 
+  virtual bool isOpen() const = 0;
   virtual Result<DatabaseResult<Transaction>,std::string> queryTransactions() = 0;
+  virtual bool insertTransactions(std::vector<Transaction>) = 0;
+
 };
 
 }
