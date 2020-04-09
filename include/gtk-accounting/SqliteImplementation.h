@@ -7,24 +7,28 @@
 
 namespace acc {
 
-  class SqliteImplementation : public DatabaseInterface {
-    public:
-    SqliteImplementation();
+class SqliteImplementation : public DatabaseInterface {
+public:
+  SqliteImplementation();
 
-    ~SqliteImplementation() = default;
-    SqliteImplementation(const SqliteImplementation &) = delete;
-    SqliteImplementation(SqliteImplementation &&) = delete;
-    SqliteImplementation& operator=(const SqliteImplementation &) = delete;
-    SqliteImplementation& operator=(SqliteImplementation &&) = delete;
+  ~SqliteImplementation() = default;
+  SqliteImplementation(const SqliteImplementation &) = delete;
+  SqliteImplementation(SqliteImplementation &&) = delete;
+  SqliteImplementation &operator=(const SqliteImplementation &) = delete;
+  SqliteImplementation &operator=(SqliteImplementation &&) = delete;
 
-    private:
-    Result<DatabaseResult<Transaction>,std::string> queryTransactions();
+private:
+  bool isOpen() const;
+  Result<DatabaseResult<Transaction>, std::string> queryTransactions();
+  bool insertTransactions(std::vector<Transaction>);
 
-    std::string getQuery();
+  std::string getQuery();
+  void createTables();
 
-    private:
-    sqlite3* m_db;
-  };
-}
+private:
+  sqlite3 *m_db;
+  bool m_isOpen;
+};
+} // namespace acc
 
 #endif // _GTK_ACCOUNTING_SQLITE_IMPLEMENTATION_H_
