@@ -7,10 +7,9 @@ namespace acc {
 class DispatchInterface {
   public:
   virtual ~DispatchInterface() {}
-
   using DispatchEvent = std::function<void(void)>; 
-
   virtual void queueEvent(DispatchEvent) = 0;
+  virtual void shutdown() = 0;
 };
 }  // namespace acc
 
