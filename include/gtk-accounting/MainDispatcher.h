@@ -3,6 +3,7 @@
 
 #include <gtk-accounting/DispatchInterface.h>
 
+#include <condition_variable>
 #include <functional>
 #include <mutex>
 #include <queue>
@@ -14,7 +15,7 @@ class MainDispatcher : public DispatchInterface {
  public:
   MainDispatcher();
 
-  ~MainDispatcher() = default;
+  ~MainDispatcher();
   MainDispatcher(const MainDispatcher &) = delete;
   MainDispatcher(MainDispatcher &&) = delete;
   MainDispatcher &operator=(const MainDispatcher &) = delete;
@@ -22,6 +23,7 @@ class MainDispatcher : public DispatchInterface {
 
  private:
   void queueEvent(DispatchEvent);
+  void shutdown();
 
  private:
   class DispatchThread {
@@ -35,20 +37,14 @@ class MainDispatcher : public DispatchInterface {
     DispatchThread &operator=(DispatchThread &&) = delete;
 
     void queueEvent(DispatchEvent);
-
+    void shutdown();
     void threadFunction();
 
-    // Listen for event
-
-    // Dipatch event
-
-    // If events in queue, dispatch again
-
-    // If queue is empty, go back to listening
-
    private:
-    std::queue<std::function<void()>> m_queue;
+    std::queue<DispatchEvent> m_queue;
     std::mutex m_mutex;
+    std::condition_variable m_cv;
+    bool m_running;
   };
 
   DispatchThread m_dispatchThread;
