@@ -5,6 +5,7 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS
 add_library(gtk-accounting-lib
             LibFacade.cpp
             MainDispatcher.cpp
+            ScopedConnection.cpp
             SqliteImplementation.cpp
             TransactionHandler.cpp
             ${HEADER_LIST})
