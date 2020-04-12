@@ -35,7 +35,7 @@ SqliteImplementation::SqliteImplementation() : m_isOpen(false) {
 Result<DatabaseResult<Transaction>, std::string> SqliteImplementation::queryTransactions() {
   Result<DatabaseResult<Transaction>, std::string> result;
   sqlite3_stmt *statement = nullptr;
-  std::string queryString = getQuery();
+  std::string queryString = "SELECT * from trans";
   int resultCode =
       sqlite3_prepare_v2(m_db, queryString.c_str(), queryString.length(), &statement, nullptr);
   if (resultCode == SQLITE_OK) {
@@ -118,6 +118,11 @@ void SqliteImplementation::createTables() {
               << ". sqlite error code: " << resultCode << "\n";
 
   sqlite3_finalize(statement);
+}
+
+bool SqliteImplementation::deleteTransactions(std::vector<uint64_t>) {
+  // TODO: Add delete query
+  return false;
 }
 
 }  // namespace acc
