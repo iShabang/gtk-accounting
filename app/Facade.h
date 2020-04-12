@@ -1,18 +1,22 @@
 #ifndef _GTK_ACCOUNTING_APP_FACADE_H_
 #define _GTK_ACCOUNTING_APP_FACADE_H_
 
-#include <gtkmm/builder.h>
+#include "Builder.h"
+#include "Table.h"
+
+#include <gtk-accounting/LibFacadeInterface.h>
 
 class Facade
 {
     public:
-    Facade();
+    Facade(acc::LibFacadeInterface &lib);
 
-    Glib::RefPtr<Gtk::Builder> builder();
+    Builder &builder();
 
 
     private:
-    Glib::RefPtr<Gtk::Builder> m_builder;
+    Builder m_builder;
+    Table m_table;
 };
 
 #endif // _GTK_ACCOUNTING_APP_FACADE_H_
