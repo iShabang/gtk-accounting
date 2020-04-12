@@ -21,6 +21,7 @@ private:
   bool isOpen() const;
   Result<DatabaseResult<Transaction>, std::string> queryTransactions();
   bool insertTransactions(std::vector<Transaction>);
+  bool deleteTransactions(std::vector<uint64_t>);
 
   std::string getQuery();
   void createTables();
