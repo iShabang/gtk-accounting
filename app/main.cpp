@@ -8,9 +8,10 @@
 int main(int argc, char **argv) {
 
   // Initialize library
-  acc::LibFacade libFacade;
+  acc::LibFacade libFacadeImpl;
+  acc::LibFacadeInterface &libInterface = libFacadeImpl;
 
-  if (!libFacade.database().isOpen()) {
+  if (!libInterface.database().isOpen()) {
     std::cerr << "Main(): failed to open database. Aborting\n";
     return 1;
   }
@@ -18,11 +19,11 @@ int main(int argc, char **argv) {
   // Initialize gtk
   auto app = Gtk::Application::create(argc, argv, "gtk-accounting");
 
-  Facade facade;
+  Facade facade(libInterface);
 
   Gtk::Window* window = nullptr;
 
-  facade.builder()->get_widget("mainWindow", window);
+  facade.builder().getWidget("mainWindow",window);
 
   if (window){
     window->set_default_size(200, 200);
