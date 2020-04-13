@@ -38,6 +38,7 @@ void MainDispatcher::DispatchThread::threadFunction() {
 
     if (m_queue.size()) {
       DispatchEvent event = std::move(m_queue.front());
+      m_queue.pop();
 
       lock.unlock();
 
