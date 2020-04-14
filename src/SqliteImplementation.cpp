@@ -21,6 +21,7 @@ SqliteImplementation::SqliteImplementation() : m_isOpen(false) {
     flags |= SQLITE_OPEN_CREATE;
     status = sqlite3_open_v2(DB_NAME.c_str(), &m_db, flags, nullptr);
     if (status == SQLITE_OK) {
+      std::cout << "SqliteImplementation::SqliteImplementation() creating tables" << std::endl;
       createTables();
     }
   }
@@ -116,6 +117,8 @@ void SqliteImplementation::createTables() {
   if (resultCode != SQLITE_OK)
     std::cerr << "SqliteImplementation::createTables(): Error: " << sqlite3_errstr(resultCode)
               << ". sqlite error code: " << resultCode << "\n";
+
+  sqlite3_step(statement);
 
   sqlite3_finalize(statement);
 }
