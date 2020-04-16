@@ -4,7 +4,6 @@
 #include "Builder.h"
 
 #include <gtk-accounting/TransactionInterface.h>
-#include <gtk-accounting/ScopedConnection.h>
 
 #include <gtkmm/box.h>
 
@@ -22,8 +21,9 @@ class Table {
     acc::TransactionInterface &m_tran;
     Builder &m_builder;
 
-    acc::ScopedConnection m_tranConn;
+
     Gtk::Box *m_tableBox;
+    acc::ScopedConnection m_tranConn;
 };
 
 #endif // _GTK_ACCOUNTING_APP_TABLE_H_
