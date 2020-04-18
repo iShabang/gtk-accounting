@@ -4,6 +4,7 @@
 #include <iostream>
 #include <gtkmm/window.h>
 #include <gtkmm/application.h>
+#include <gtkmm/cssprovider.h>
 
 int main(int argc, char **argv) {
 
@@ -18,6 +19,10 @@ int main(int argc, char **argv) {
 
   // Initialize gtk
   auto app = Gtk::Application::create(argc, argv, "gtk-accounting");
+
+  Glib::RefPtr<Gtk::CssProvider> provider = Gtk::CssProvider::create();
+  provider->load_from_path("../theme.css");
+  Gtk::StyleContext::add_provider_for_screen(Gdk::Screen::get_default(), provider,GTK_STYLE_PROVIDER_PRIORITY_USER);
 
   Facade facade(libInterface);
 
