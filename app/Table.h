@@ -15,12 +15,13 @@ class Table {
   void onTransactions(std::vector<acc::Transaction> data);
   void onDelete();
   Gtk::Box *createTableEntry(const acc::Transaction &transaction);
+  void setHeaderAlignment(const float &value);
    private:
     acc::TransactionInterface &m_tran;
     Builder &m_builder;
-
     Gtk::Box *m_tableBox;
     acc::ScopedConnection m_tranConn;
+    float m_align;
   };
 
 #endif  // _GTK_ACCOUNTING_APP_TABLE_H_
