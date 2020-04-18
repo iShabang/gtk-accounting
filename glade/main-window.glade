@@ -158,6 +158,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
+                    <property name="halign">start</property>
                     <property name="draw_indicator">True</property>
                   </object>
                   <packing>
@@ -170,7 +171,9 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Name</property>
+                    <property name="justify">fill</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -182,7 +185,9 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Date</property>
+                    <property name="justify">fill</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -194,7 +199,9 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">start</property>
                     <property name="label" translatable="yes">Amount</property>
+                    <property name="justify">fill</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
