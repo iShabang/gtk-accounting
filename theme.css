@@ -1,10 +1,41 @@
 window {
-  background-color: #737ff4;
+  background-color: #ffffff;
 }
 
 button {
-  background-color: #739ff4;
- }
+  /*
+  background-image: none;
+  background-color: #739ff4; 
+  border-color: #739ff4;
+  color: #ffffff;
+  */
+}
+
+button label {
+  border: 0px;
+}
+
+checkbutton label {
+  border: 0px;
+}
+
+.HeaderFrame {
+  border-top: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+}
+
+.HeaderFrame label {
+  background-color: #739ff4; 
+}
+
+.HeaderFrame checkbutton {
+  background-color: #739ff4; 
+}
+
+#tableCell {
+  border: 1px solid black;
+}
 
 label {
 }
