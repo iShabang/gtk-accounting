@@ -8,7 +8,6 @@ add_library(gtk-accounting-lib
             LogDispatcher.cpp
             MainDispatcher.cpp
             Precision.cpp
-            ScopedConnection.cpp
             SqliteImplementation.cpp
             Time.cpp
             TransactionHandler.cpp
