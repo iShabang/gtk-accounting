@@ -3,6 +3,7 @@
 
 #include <gtk-accounting/TransactionInterface.h>
 #include <gtkmm/box.h>
+#include <gtkmm/checkbutton.h>
 
 #include "Builder.h"
 
@@ -16,12 +17,15 @@ class Table {
   void onDelete();
   Gtk::Box *createTableEntry(const acc::Transaction &transaction);
   void setHeaderAlignment(const float &value);
-   private:
-    acc::TransactionInterface &m_tran;
-    Builder &m_builder;
-    Gtk::Box *m_tableBox;
-    acc::ScopedConnection m_tranConn;
-    float m_align;
-  };
+
+  void onSelected(Gtk::CheckButton *checkBtn, const uint64_t &id);
+
+ private:
+  acc::TransactionInterface &m_tran;
+  Builder &m_builder;
+  Gtk::Box *m_tableBox;
+  acc::ScopedConnection m_tranConn;
+  float m_align;
+};
 
 #endif  // _GTK_ACCOUNTING_APP_TABLE_H_
