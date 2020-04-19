@@ -1,6 +1,7 @@
 #ifndef _GTK_ACCOUNTING_APP_TABLE_H_
 #define _GTK_ACCOUNTING_APP_TABLE_H_
 
+#include <gtk-accounting/LogChannel.h>
 #include <gtk-accounting/TransactionInterface.h>
 #include <gtkmm/box.h>
 #include <gtkmm/checkbutton.h>
@@ -26,6 +27,7 @@ class Table {
   Gtk::Box *m_tableBox;
   acc::ScopedConnection m_tranConn;
   float m_align;
+  acc::LogChannel m_logger;
 };
 
 #endif  // _GTK_ACCOUNTING_APP_TABLE_H_

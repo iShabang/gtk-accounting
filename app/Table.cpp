@@ -13,7 +13,8 @@ Table::Table(acc::TransactionInterface &tran, Builder &builder)
       m_builder(builder),
       m_tranConn(tran.transactionsReceived().connect(
           [this](std::vector<acc::Transaction> data) { onTransactions(data); })),
-      m_align(0.1) {
+      m_align(0.1),
+      m_logger("Table") {
   m_builder.getWidget("tableBox", m_tableBox);
   setHeaderAlignment(m_align);
   m_tran.requestTransactions();
@@ -85,6 +86,7 @@ void Table::setHeaderAlignment(const float &value) {
 }
 
 void Table::onSelected(Gtk::CheckButton *checkBtn, const uint64_t &id) {
+  m_logger.debug("onSelected() entry");
   if (checkBtn != nullptr) {
     bool select = false;
     if (checkBtn->get_active()) {
