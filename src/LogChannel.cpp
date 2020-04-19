@@ -8,10 +8,13 @@ LogChannel::LogChannel(const std::string &name)
     : logger(LogDispatcher::getInstance()), m_channelName(name) {}
 
 void LogChannel::debug(const std::string &message) {
-
-  std::stringstream ss;
-  ss << "DEBUG [" << m_channelName << "]: " << message;
-  logger.queueMessage(ss.str());
+  #ifdef DEBUG_MODE
+    std::stringstream ss;
+    ss << "DEBUG [" << m_channelName << "]: " << message;
+    logger.queueMessage(ss.str());
+  #else
+    (void)message;
+  #endif
 }
 
 void LogChannel::warning(const std::string &message) {

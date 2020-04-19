@@ -16,6 +16,7 @@ add_library(gtk-accounting-lib
 target_include_directories(gtk-accounting-lib PUBLIC ../include
                            ${SIGC_INCLUDE_DIRS}, ${SQLITE_INCLUDE_DIRS})
 target_compile_features(gtk-accounting-lib PUBLIC cxx_std_17)
+target_compile_options(gtk-accounting-lib PUBLIC ${MY_COMPILE_FLAGS})
 target_link_libraries(gtk-accounting-lib PRIVATE ${SIGC_LIBRARIES}
                       ${SQLITE_LIBRARIES} pthread)
 source_group(TREE "${PROJECT_SOURCE_DIR}/include" PREFIX "Header Files" FILES ${HEADER_LIST})
