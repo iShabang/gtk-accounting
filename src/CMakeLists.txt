@@ -4,6 +4,8 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS
 
 add_library(gtk-accounting-lib
             LibFacade.cpp
+            LogChannel.cpp
+            LogDispatcher.cpp
             MainDispatcher.cpp
             Precision.cpp
             ScopedConnection.cpp
