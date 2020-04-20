@@ -11,6 +11,7 @@
 Table::Table(acc::TransactionInterface &tran, Builder &builder)
     : m_tran(tran),
       m_builder(builder),
+      m_entryBox(nullptr),
       m_tranConn(tran.transactionsReceived().connect(
           [this](std::vector<acc::Transaction> data) { onTransactions(data); })),
       m_align(0.1),
@@ -21,12 +22,19 @@ Table::Table(acc::TransactionInterface &tran, Builder &builder)
 }
 
 void Table::onTransactions(std::vector<acc::Transaction> data) {
-  std::cout << "onTransactions. length: " << data.size() << std::endl;
+  LOG(acc::DEBUG,m_logger) << "onTransactions(): length: " << data.size();
+  if (m_entryBox) {
+    m_tableBox->remove(*m_entryBox);
+    delete m_entryBox;
+  }
+  m_entryBox = Gtk::make_managed<Gtk::Box>();
+  m_entryBox->set_orientation(Gtk::ORIENTATION_VERTICAL);
   for (auto &&i : data) {
     Gtk::Box *box = createTableEntry(i);
-    m_tableBox->pack_start(*box);
-    m_tableBox->show_all_children();
+    m_entryBox->pack_start(*box);
   }
+  m_tableBox->pack_start(*m_entryBox);
+  m_tableBox->show_all_children();
 }
 
 Gtk::Box *Table::createTableEntry(const acc::Transaction &transaction) {

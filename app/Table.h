@@ -25,6 +25,7 @@ class Table {
   acc::TransactionInterface &m_tran;
   Builder &m_builder;
   Gtk::Box *m_tableBox;
+  Gtk::Box *m_entryBox;
   acc::ScopedConnection m_tranConn;
   float m_align;
   acc::LogChannel m_logger;
