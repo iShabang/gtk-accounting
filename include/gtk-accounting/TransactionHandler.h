@@ -3,6 +3,7 @@
 
 #include <gtk-accounting/DatabaseInterface.h>
 #include <gtk-accounting/DispatchInterface.h>
+#include <gtk-accounting/LogChannel.h>
 #include <gtk-accounting/TransactionInterface.h>
 
 #include <unordered_map>
@@ -40,6 +41,7 @@ class TransactionHandler : public TransactionInterface {
  private:
   DatabaseInterface &m_database;
   DispatchInterface &m_dispatcher;
+  LogChannel m_logger;
 
   std::unordered_map<uint64_t,bool> m_map;
 

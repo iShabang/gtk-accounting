@@ -5,7 +5,7 @@
 namespace acc {
 
 TransactionHandler::TransactionHandler(DatabaseInterface &database, DispatchInterface &dispatcher)
-    : m_database(database), m_dispatcher(dispatcher) {}
+    : m_database(database), m_dispatcher(dispatcher), m_logger("TransactionHandler") {}
 
 void TransactionHandler::addTransaction(const Transaction &transaction) {
   m_dispatcher.queueEvent([this, &transaction]() { addTransactionInternal(transaction); });
@@ -54,6 +54,7 @@ void TransactionHandler::selectTransaction(const uint64_t &id, bool select) {
 }
 
 void TransactionHandler::selectTransactionInternal(const uint64_t &id, bool select) {
+  LOG(DEBUG,m_logger) << "selectTransactionInternal(): id: " << id << " select: " << select;
   auto entry = m_map.find(id);
   if (entry != m_map.end()) {
     m_map[id] = select;
