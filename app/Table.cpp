@@ -86,7 +86,8 @@ void Table::setHeaderAlignment(const float &value) {
 }
 
 void Table::onSelected(Gtk::CheckButton *checkBtn, const uint64_t &id) {
-  m_logger.debug("onSelected() entry");
+  LOG(acc::DEBUG,m_logger) << "onSelected(): id: " << id;
+
   if (checkBtn != nullptr) {
     bool select = false;
     if (checkBtn->get_active()) {
