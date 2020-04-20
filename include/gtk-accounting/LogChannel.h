@@ -7,12 +7,11 @@
 
 namespace acc {
 
-#define LOG(level, channel)    \
+#define LOG(level, channel)         \
   if (level < acc::Log::getLevel()) \
-    ;                          \
-  else                         \
+    ;                               \
+  else                              \
     acc::Log().getStream(level, channel.name())
-
 
 class LogChannel {
  public:
