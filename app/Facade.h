@@ -3,6 +3,8 @@
 
 #include "Builder.h"
 #include "Table.h"
+#include "AddTransactionPopup.h"
+#include "MenuBox.h"
 
 #include <gtk-accounting/LibFacadeInterface.h>
 
@@ -17,6 +19,8 @@ class Facade
     private:
     Builder m_builder;
     Table m_table;
+    AddTransactionPopup m_addTranPopup;
+    MenuBox m_menuBox;
 };
 
 #endif // _GTK_ACCOUNTING_APP_FACADE_H_
