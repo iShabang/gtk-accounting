@@ -2,6 +2,20 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="dataListStore">
+    <columns>
+      <!-- column-name selectModelColumn -->
+      <column type="gboolean"/>
+      <!-- column-name nameModelColumn -->
+      <column type="gchararray"/>
+      <!-- column-name dateModelColumn -->
+      <column type="gchararray"/>
+      <!-- column-name amountModelColumn -->
+      <column type="gchararray"/>
+      <!-- column-name idModelColumn -->
+      <column type="guint64"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="name">mainWindow</property>
     <property name="can_focus">False</property>
@@ -26,7 +40,6 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <signal name="clicked" handler="onButtonClicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -144,127 +157,50 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="tableBox">
+          <object class="GtkTreeView" id="tableTreeView">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
+            <property name="can_focus">True</property>
+            <property name="model">dataListStore</property>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
             <child>
-              <object class="GtkBox" id="tableHeaderBox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="homogeneous">True</property>
+              <object class="GtkTreeViewColumn" id="selectColumn">
+                <property name="title" translatable="yes">Select</property>
                 <child>
-                  <object class="GtkFrame">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
-                    <child>
-                      <object class="GtkCheckButton" id="headerCheckButton">
-                        <property name="label" translatable="yes">Select</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">False</property>
-                        <property name="draw_indicator">True</property>
-                      </object>
-                    </child>
-                    <child type="label_item">
-                      <placeholder/>
-                    </child>
-                    <style>
-                      <class name="HeaderFrame"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFrame">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
-                    <child>
-                      <object class="GtkLabel" id="headerNameLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Name</property>
-                      </object>
-                    </child>
-                    <child type="label_item">
-                      <placeholder/>
-                    </child>
-                    <style>
-                      <class name="HeaderFrame"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFrame">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
-                    <child>
-                      <object class="GtkLabel" id="headerDateLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Date</property>
-                      </object>
-                    </child>
-                    <child type="label_item">
-                      <placeholder/>
-                    </child>
-                    <style>
-                      <class name="HeaderFrame"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkFrame">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
-                    <child>
-                      <object class="GtkLabel" id="headerAmountLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Amount</property>
-                      </object>
-                    </child>
-                    <child type="label_item">
-                      <placeholder/>
-                    </child>
-                    <style>
-                      <class name="HeaderFrame"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
+                  <object class="GtkCellRendererToggle" id="selectRender"/>
+                  <attributes>
+                    <attribute name="active">0</attribute>
+                  </attributes>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="nameColumn">
+                <property name="title" translatable="yes">Name</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="nameRender"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="dateColumn">
+                <property name="title" translatable="yes">Date</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="dateRender"/>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn" id="amountColumn">
+                <property name="title" translatable="yes">Amount</property>
+                <property name="expand">True</property>
+                <child>
+                  <object class="GtkCellRendererText" id="amountRender"/>
+                </child>
+              </object>
             </child>
           </object>
           <packing>
