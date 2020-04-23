@@ -3,29 +3,41 @@
 
 #include <gtk-accounting/LogChannel.h>
 #include <gtk-accounting/TransactionInterface.h>
-#include <gtkmm/box.h>
 #include <gtkmm/checkbutton.h>
+#include <gtkmm/liststore.h>
+#include <gtkmm/treeview.h>
 
 #include "Builder.h"
+
+enum ViewColumns { VIEW_SELECT, VIEW_NAME, VIEW_DATE, VIEW_AMOUNT, VIEW_NUM_COLUMNS };
+
+enum ModelColumns {
+  MODEL_SELECT,
+  MODEL_NAME,
+  MODEL_DATE,
+  MODEL_AMOUNT,
+  MODEL_ID,
+  MODEL_NUM_COLUMNS
+};
 
 class Table {
  public:
   Table(acc::TransactionInterface &tran, Builder &builder);
 
  private:
-  void onEntrySelect();
   void onTransactions(std::vector<acc::Transaction> data);
-  void onDelete();
-  Gtk::Box *createTableEntry(const acc::Transaction &transaction);
-  void setHeaderAlignment(const float &value);
 
-  void onSelected(Gtk::CheckButton *checkBtn, const uint64_t &id);
+  static void onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table);
+
+  void setupColumns();
+  void addColumnRenderer(const std::string &nameBase, const std::string &attribute, int column);
+  void connectRenderSignals();
 
  private:
   acc::TransactionInterface &m_tran;
   Builder &m_builder;
-  Gtk::Box *m_tableBox;
-  Gtk::Box *m_entryBox;
+  Gtk::TreeView *m_treeView;
+  Glib::RefPtr<Gtk::ListStore> m_listStore;
   acc::ScopedConnection m_tranConn;
   float m_align;
   acc::LogChannel m_logger;

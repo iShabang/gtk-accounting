@@ -11,97 +11,90 @@
 Table::Table(acc::TransactionInterface &tran, Builder &builder)
     : m_tran(tran),
       m_builder(builder),
-      m_entryBox(nullptr),
       m_tranConn(tran.transactionsReceived().connect(
           [this](std::vector<acc::Transaction> data) { onTransactions(data); })),
       m_align(0.1),
       m_logger("Table") {
-  m_builder.getWidget("tableBox", m_tableBox);
-  setHeaderAlignment(m_align);
+  builder.getWidget("tableTreeView", m_treeView);
+  m_listStore = Glib::RefPtr<Gtk::ListStore>::cast_static(builder.getObject("dataListStore"));
+  setupColumns();
+  connectRenderSignals();
   m_tran.requestTransactions();
 }
 
 void Table::onTransactions(std::vector<acc::Transaction> data) {
-  LOG(acc::DEBUG,m_logger) << "onTransactions(): length: " << data.size();
-  if (m_entryBox) {
-    m_tableBox->remove(*m_entryBox);
-    delete m_entryBox;
-  }
-  m_entryBox = Gtk::make_managed<Gtk::Box>();
-  m_entryBox->set_orientation(Gtk::ORIENTATION_VERTICAL);
-  for (auto &&i : data) {
-    Gtk::Box *box = createTableEntry(i);
-    m_entryBox->pack_start(*box);
-  }
-  m_tableBox->pack_start(*m_entryBox);
-  m_tableBox->show_all_children();
-}
+  LOG(acc::DEBUG, m_logger) << "onTransactions(): length: " << data.size();
 
-Gtk::Box *Table::createTableEntry(const acc::Transaction &transaction) {
-  Gtk::Box *box = Gtk::make_managed<Gtk::Box>();
-  Gtk::CheckButton *checkButton = Gtk::make_managed<Gtk::CheckButton>();
-  Gtk::Label *nameLabel = Gtk::make_managed<Gtk::Label>(transaction.name, Gtk::ALIGN_FILL);
-  Gtk::Label *dateLabel =
-      Gtk::make_managed<Gtk::Label>(acc::formatDate(transaction.date), Gtk::ALIGN_FILL);
-  Gtk::Label *amountLabel =
-      Gtk::make_managed<Gtk::Label>(acc::floatToString(transaction.amount), Gtk::ALIGN_FILL);
-  Gtk::Frame *checkFrame = Gtk::make_managed<Gtk::Frame>();
-  Gtk::Frame *nameFrame = Gtk::make_managed<Gtk::Frame>();
-  Gtk::Frame *dateFrame = Gtk::make_managed<Gtk::Frame>();
-  Gtk::Frame *amountFrame = Gtk::make_managed<Gtk::Frame>();
+  if (m_listStore && m_treeView) {
+    m_listStore->clear();
+    for (auto &&i : data) {
+      GtkTreeIter iter;
+      gtk_list_store_append(m_listStore->gobj(), &iter);
 
-  checkFrame->set_name("tableCell");
-  nameFrame->set_name("tableCell");
-  dateFrame->set_name("tableCell");
-  amountFrame->set_name("tableCell");
-
-  box->set_halign(Gtk::ALIGN_FILL);
-  box->set_homogeneous(true);
-
-  checkButton->set_label("");
-  checkButton->set_halign(Gtk::ALIGN_FILL);
-  checkFrame->add(*checkButton);
-  uint64_t id = transaction.id;
-  checkButton->signal_toggled().connect([this, checkButton, id]() { onSelected(checkButton, id); });
-  box->pack_start(*checkFrame);
-
-  gtk_label_set_xalign(nameLabel->gobj(), m_align);
-  nameFrame->add(*nameLabel);
-  box->pack_start(*nameFrame);
-
-  gtk_label_set_xalign(dateLabel->gobj(), m_align);
-  dateFrame->add(*dateLabel);
-  box->pack_start(*dateFrame);
-
-  gtk_label_set_xalign(amountLabel->gobj(), m_align);
-  amountFrame->add(*amountLabel);
-  box->pack_start(*amountFrame);
-
-  return box;
-}
-
-void Table::setHeaderAlignment(const float &value) {
-  Gtk::Label *label = nullptr;
-
-  m_builder.getWidget("headerNameLabel", label);
-  gtk_label_set_xalign(label->gobj(), value);
-
-  m_builder.getWidget("headerDateLabel", label);
-  gtk_label_set_xalign(label->gobj(), value);
-
-  m_builder.getWidget("headerAmountLabel", label);
-  gtk_label_set_xalign(label->gobj(), value);
-}
-
-void Table::onSelected(Gtk::CheckButton *checkBtn, const uint64_t &id) {
-  LOG(acc::DEBUG,m_logger) << "onSelected(): id: " << id;
-
-  if (checkBtn != nullptr) {
-    bool select = false;
-    if (checkBtn->get_active()) {
-      select = true;
+      gtk_list_store_set(m_listStore->gobj(), &iter, MODEL_SELECT, false, MODEL_NAME,
+                         i.name.c_str(), MODEL_DATE, acc::formatDate(i.date).c_str(), MODEL_AMOUNT,
+                         acc::floatToString(i.amount).c_str(), MODEL_ID, i.id, -1);
     }
-
-    m_tran.selectTransaction(id, select);
   }
+}
+
+void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table) {
+  LOG(acc::DEBUG, table->m_logger) << "onSelected()";
+
+  if (!renderer) {
+    LOG(acc::DEBUG, table->m_logger) << "onSelected(): renderer object is null";
+    return;
+  }
+
+  if (!path) {
+    LOG(acc::DEBUG, table->m_logger) << "onSelected(): data path is null";
+    return;
+  }
+
+  GtkTreeIter iter;
+  GtkTreePath *treePath = gtk_tree_path_new_from_string(path);
+  gtk_tree_model_get_iter(GTK_TREE_MODEL(table->m_listStore->gobj()), &iter, treePath);
+
+  GValue selectValue = G_VALUE_INIT;
+  GValue idValue = G_VALUE_INIT;
+  gtk_tree_model_get_value(GTK_TREE_MODEL(table->m_listStore->gobj()), &iter, MODEL_SELECT,
+                           &selectValue);
+  gtk_tree_model_get_value(GTK_TREE_MODEL(table->m_listStore->gobj()), &iter, MODEL_ID, &idValue);
+
+  bool select = !g_value_get_boolean(&selectValue);
+  uint64_t id = g_value_get_uint64(&idValue);
+
+  gtk_list_store_set(table->m_listStore->gobj(), &iter, MODEL_SELECT, select, -1);
+
+  gtk_tree_path_free(treePath);
+  g_value_unset(&selectValue);
+  g_value_unset(&idValue);
+
+  table->m_tran.selectTransaction(id, select);
+}
+
+void Table::setupColumns() {
+  addColumnRenderer("name", "text", VIEW_NAME);
+  addColumnRenderer("date", "text", VIEW_DATE);
+  addColumnRenderer("amount", "text", VIEW_AMOUNT);
+}
+
+void Table::addColumnRenderer(const std::string &nameBase, const std::string &attribute,
+                              int column) {
+  std::string columnName = nameBase + "Column";
+  std::string renderName = nameBase + "Render";
+  GtkTreeViewColumn *vc =
+      GTK_TREE_VIEW_COLUMN(gtk_builder_get_object(m_builder.getRef(), columnName.c_str()));
+  GtkCellRenderer *cr =
+      GTK_CELL_RENDERER(gtk_builder_get_object(m_builder.getRef(), renderName.c_str()));
+  if (vc && cr) {
+    gtk_tree_view_column_add_attribute(vc, cr, attribute.c_str(), column);
+  }
+}
+
+void Table::connectRenderSignals() {
+  GtkCellRendererToggle *cr =
+      GTK_CELL_RENDERER_TOGGLE(gtk_builder_get_object(m_builder.getRef(), "selectRender"));
+
+  g_signal_connect(cr, "toggled", G_CALLBACK(Table::onSelected), this);
 }
