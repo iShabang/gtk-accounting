@@ -13,10 +13,14 @@ class Builder {
     Builder& operator=(const Builder &) = delete;
     Builder& operator=(Builder &&) = delete;
 
+    GtkBuilder * getRef();
+
     template<class T>
     void getWidget(const std::string &name, T*& widget) {
       m_builder->get_widget(name, widget);
     }
+
+    Glib::RefPtr<Glib::Object> getObject(const std::string &name);
 
   private:
     Glib::RefPtr<Gtk::Builder> m_builder;
