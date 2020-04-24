@@ -3,7 +3,6 @@
 
 #include <gtk-accounting/LogChannel.h>
 #include <gtk-accounting/TransactionInterface.h>
-#include <gtkmm/checkbutton.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treeview.h>
 

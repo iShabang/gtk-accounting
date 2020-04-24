@@ -2,8 +2,6 @@
 
 #include <gtk-accounting/Precision.h>
 #include <gtk-accounting/Time.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/label.h>
 
 #include <iostream>
 #include <string>
