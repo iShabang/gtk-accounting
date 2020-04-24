@@ -2,6 +2,7 @@
 #define _GTK_ACCOUNTING_SQLITE_IMPLEMENTATION_H_
 
 #include <gtk-accounting/DatabaseInterface.h>
+#include <gtk-accounting/LogChannel.h>
 
 #include <sqlite3.h>
 
@@ -29,6 +30,7 @@ private:
 private:
   sqlite3 *m_db;
   bool m_isOpen;
+  LogChannel m_log;
 };
 } // namespace acc
 
