@@ -62,6 +62,8 @@ void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *tabl
   bool select = !g_value_get_boolean(&selectValue);
   uint64_t id = g_value_get_uint64(&idValue);
 
+  LOG(acc::DEBUG,table->m_logger) << "onSelected(): select: " << select << ". id: " << id;
+
   gtk_list_store_set(table->m_listStore->gobj(), &iter, MODEL_SELECT, select, -1);
 
   gtk_tree_path_free(treePath);
