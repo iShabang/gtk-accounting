@@ -13,7 +13,7 @@ static const std::string DATE_SUFFIX = "WHERE date >= ? AND date <= ?";
 static const std::string NAME_SUFFIX = "WHERE name LIKE ?";
 static const std::string AMOUNT_SUFFIX = "WHERE amount >= ? AND amount <= ?";
 
-SqliteImplementation::SqliteImplementation() : m_isOpen(false) {
+SqliteImplementation::SqliteImplementation() : m_isOpen(false), m_log("SqliteImplementation") {
   int status = sqlite3_open_v2(DB_NAME.c_str(), &m_db, SQLITE_OPEN_READWRITE, nullptr);
   if (status == SQLITE_CANTOPEN) {
     int flags = 0;
@@ -123,8 +123,41 @@ void SqliteImplementation::createTables() {
   sqlite3_finalize(statement);
 }
 
-bool SqliteImplementation::deleteTransactions(std::vector<uint64_t>) {
-  // TODO: Add delete query
+bool SqliteImplementation::deleteTransactions(std::vector<uint64_t> ids) {
+  LOG(DEBUG,m_log) << "deleteTransactions(): length: " << ids.size();
+  std::string query = "DELETE FROM trans WHERE trans.id = ?";
+  sqlite3_stmt *statement = nullptr;
+  int res = sqlite3_prepare_v2(m_db, query.c_str(), query.length(), &statement, nullptr);
+
+  if (res != SQLITE_OK) {
+    LOG(ERROR, m_log) << "deleteTransactions(): Failed to prepare statement with error code: "
+                      << res << ". Message: " << sqlite3_errstr(res);
+    return false;
+  }
+
+  for (auto &&i : ids) {
+    res = sqlite3_bind_int64(statement, 1, i);
+    if (res != SQLITE_OK) {
+      LOG(DEBUG, m_log) << "deleteSelectedInternal(): Failed to bind " << i
+                        << " to delete statement. Error Code: " << res << ". Message: " << sqlite3_errstr(res);
+      sqlite3_reset(statement);
+      continue;
+    }
+
+    res = sqlite3_step(statement);
+
+    if (res != SQLITE_DONE) {
+      LOG(DEBUG, m_log) << "deleteSelectedInternal(): Failed to delete transaction with id " << i
+                        << ". Error Code: " << res << ". Message: " << sqlite3_errstr(res);
+    }
+
+    sqlite3_reset(statement);
+  }
+
+  sqlite3_finalize(statement);
+
+  LOG(DEBUG,m_log) << "deleteTransactions(): exit";
+
   return false;
 }
 
