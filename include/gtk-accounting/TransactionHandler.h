@@ -43,8 +43,7 @@ class TransactionHandler : public TransactionInterface {
   DispatchInterface &m_dispatcher;
   LogChannel m_logger;
 
-  std::unordered_map<uint64_t,bool> m_map;
-
+  std::unordered_map<uint64_t, bool> m_map;
 };
 
 }  // namespace acc

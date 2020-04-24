@@ -43,8 +43,7 @@ void TransactionHandler::requestTransactionsInternal() {
     m_map.clear();
     m_transactionsReceived(result.object());
   } else {
-    std::cerr << "TransactionHandler::requestTransactions(): Database error: " << result.error()
-              << "\n";
+    LOG(DEBUG, m_logger) << "requestTransactions(): Database error: " << result.error() << "\n";
   }
 }
 
