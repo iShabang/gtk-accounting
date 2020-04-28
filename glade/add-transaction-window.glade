@@ -2,6 +2,24 @@
 <!-- Generated with glade 3.22.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkListStore" id="dayStore">
+    <columns>
+      <!-- column-name days -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="monthStore">
+    <columns>
+      <!-- column-name months -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="yearStore">
+    <columns>
+      <!-- column-name gchararray1 -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="addTransactionPopup">
     <property name="can_focus">False</property>
     <property name="type_hint">utility</property>
@@ -44,7 +62,8 @@
                   <object class="GtkEntry" id="nameEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="placeholder_text" translatable="yes">Name ... </property>
+                    <property name="valign">center</property>
+                    <property name="placeholder_text" translatable="yes">Name ...</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -53,17 +72,36 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkBox" id="dateBox">
-                    <property name="width_request">100</property>
-                    <property name="height_request">80</property>
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="spacing">25</property>
+                    <property name="halign">center</property>
+                    <property name="valign">center</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkComboBox" id="monthCombo">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Date</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="model">monthStore</property>
+                        <property name="has_entry">True</property>
+                        <property name="entry_text_column">0</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="monthRender"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                        <child internal-child="entry">
+                          <object class="GtkEntry">
+                            <property name="can_focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="width_chars">5</property>
+                            <property name="placeholder_text" translatable="yes">MM</property>
+                            <property name="input_purpose">alpha</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -72,15 +110,61 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="dateLabel">
+                      <object class="GtkComboBox" id="dayCombo">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">04/20/2020</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="model">dayStore</property>
+                        <property name="has_entry">True</property>
+                        <property name="entry_text_column">0</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="dayRender"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                        <child internal-child="entry">
+                          <object class="GtkEntry">
+                            <property name="can_focus">False</property>
+                            <property name="width_chars">4</property>
+                            <property name="placeholder_text" translatable="yes">DD</property>
+                          </object>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
                         <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">center</property>
+                        <property name="valign">center</property>
+                        <property name="model">yearStore</property>
+                        <property name="has_entry">True</property>
+                        <property name="entry_text_column">0</property>
+                        <child>
+                          <object class="GtkCellRendererText" id="yearRender"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                        <child internal-child="entry">
+                          <object class="GtkEntry">
+                            <property name="can_focus">False</property>
+                            <property name="width_chars">6</property>
+                            <property name="placeholder_text" translatable="yes">YYYY</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -94,6 +178,7 @@
                   <object class="GtkEntry" id="amountEntry">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="valign">center</property>
                     <property name="placeholder_text" translatable="yes">Amount ...</property>
                     <property name="input_purpose">digits</property>
                   </object>
