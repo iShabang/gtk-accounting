@@ -29,8 +29,8 @@ class Table {
   static void onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table);
 
   void setupColumns();
-  void addColumnRenderer(const std::string &nameBase, const std::string &attribute, int column);
   void connectRenderSignals();
+  void addColumnRenderer(const std::string &nameBase, const std::string &attribute, int column);
 
  private:
   acc::TransactionInterface &m_tran;

@@ -62,7 +62,7 @@ void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *tabl
   bool select = !g_value_get_boolean(&selectValue);
   uint64_t id = g_value_get_uint64(&idValue);
 
-  LOG(acc::DEBUG,table->m_logger) << "onSelected(): select: " << select << ". id: " << id;
+  LOG(acc::DEBUG, table->m_logger) << "onSelected(): select: " << select << ". id: " << id;
 
   gtk_list_store_set(table->m_listStore->gobj(), &iter, MODEL_SELECT, select, -1);
 
@@ -79,6 +79,13 @@ void Table::setupColumns() {
   addColumnRenderer("amount", "text", VIEW_AMOUNT);
 }
 
+void Table::connectRenderSignals() {
+  GtkCellRendererToggle *cr =
+      GTK_CELL_RENDERER_TOGGLE(gtk_builder_get_object(m_builder.getRef(), "selectRender"));
+
+  g_signal_connect(cr, "toggled", G_CALLBACK(Table::onSelected), this);
+}
+
 void Table::addColumnRenderer(const std::string &nameBase, const std::string &attribute,
                               int column) {
   std::string columnName = nameBase + "Column";
@@ -90,11 +97,4 @@ void Table::addColumnRenderer(const std::string &nameBase, const std::string &at
   if (vc && cr) {
     gtk_tree_view_column_add_attribute(vc, cr, attribute.c_str(), column);
   }
-}
-
-void Table::connectRenderSignals() {
-  GtkCellRendererToggle *cr =
-      GTK_CELL_RENDERER_TOGGLE(gtk_builder_get_object(m_builder.getRef(), "selectRender"));
-
-  g_signal_connect(cr, "toggled", G_CALLBACK(Table::onSelected), this);
 }
