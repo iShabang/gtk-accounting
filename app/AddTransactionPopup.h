@@ -4,8 +4,8 @@
 #include <gtk-accounting/LogChannel.h>
 #include <gtk-accounting/TransactionInterface.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/window.h>
 #include <gtkmm/liststore.h>
+#include <gtkmm/window.h>
 
 class AddTransactionPopup {
  private:
@@ -23,7 +23,8 @@ class AddTransactionPopup {
 
   void destroy();
 
-  void addComboData(list_store store, const int &start, const int &end);
+  void addComboData(const std::string &storeName, const int &start, const int &end);
+  void setComboValue(const std::string &name, const int &value);
 
  private:
   acc::TransactionInterface &m_transactionInterface;
