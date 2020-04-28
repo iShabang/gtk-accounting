@@ -1,7 +1,8 @@
 #include "AddTransactionPopup.h"
 
 #include <gtkmm/button.h>
-#include <gtkmm/entry.h>
+#include <gtkmm/combobox.h>
+#include <string>
 
 AddTransactionPopup::AddTransactionPopup(acc::TransactionInterface &tran)
     : m_transactionInterface(tran), m_logger("AddTransactionPopup") {}
@@ -19,6 +20,16 @@ void AddTransactionPopup::show() {
   m_builder->get_widget("cancelButton", cancelButton);
   cancelButton->signal_clicked().connect([this]() { onCancel(); });
 
+  //Get combo boxes and list stores
+  list_store monthStore = list_store::cast_static(m_builder->get_object("monthStore"));
+  addComboData(monthStore,1,12);
+
+  list_store dayStore = list_store::cast_static(m_builder->get_object("dayStore"));
+  addComboData(dayStore,1,31);
+
+  list_store yearStore = list_store::cast_static(m_builder->get_object("yearStore"));
+  addComboData(yearStore,2000,2020);
+  
   // Get the window and show it
   m_builder->get_widget("addTransactionPopup", m_window);
   m_window->signal_hide().connect([this]() { onHide(); });
@@ -43,19 +54,6 @@ void AddTransactionPopup::onSubmit() {
     entry = nullptr;
   }
 
-  Gtk::Label *label = nullptr;
-  m_builder->get_widget("dateLabel", label);
-  if (label) {
-    std::string tempDate = label->get_text();
-    size_t pos = tempDate.find_first_of('/');
-    while (pos != std::string::npos) {
-      tempDate.replace(pos,1,"");
-      pos = tempDate.find_first_of('/',pos);
-    }
-    data.date = tempDate;
-    label = nullptr;
-  }
-
   LOG(acc::DEBUG,m_logger) << "transaction: name: " << data.name << " date: " << data.date << " amount: " << data.amount;
 
 
@@ -78,3 +76,15 @@ void AddTransactionPopup::destroy() {
   m_builder.reset();
   delete m_window;
 }
+
+void AddTransactionPopup::addComboData(list_store store, const int &start, const int &end) {
+  GtkTreeIter iter;
+  for (auto i=start; i<=end; i++) {
+    LOG(acc::DEBUG,m_logger) << "addComboData(): appending month: " << i << " to monthStore";
+    gtk_list_store_append(GTK_LIST_STORE(store->gobj()),&iter);
+    LOG(acc::DEBUG,m_logger) << "addComboData(): column appended";
+    gtk_list_store_set(GTK_LIST_STORE(store->gobj()), &iter, 0, std::to_string(i).c_str() , -1);
+    LOG(acc::DEBUG,m_logger) << "addComboData(): data added";
+  }
+}
+

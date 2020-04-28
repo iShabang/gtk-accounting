@@ -5,8 +5,12 @@
 #include <gtk-accounting/TransactionInterface.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/window.h>
+#include <gtkmm/liststore.h>
 
 class AddTransactionPopup {
+ private:
+  using list_store = Glib::RefPtr<Gtk::ListStore>;
+
  public:
   AddTransactionPopup(acc::TransactionInterface &tran);
 
@@ -18,6 +22,8 @@ class AddTransactionPopup {
   void onHide();
 
   void destroy();
+
+  void addComboData(list_store store, const int &start, const int &end);
 
  private:
   acc::TransactionInterface &m_transactionInterface;
