@@ -25,6 +25,8 @@ class AddTransactionPopup {
 
   void addComboData(const std::string &storeName, const int &start, const int &end);
   void setComboValue(const std::string &name, const int &value);
+  std::string getComboText(const std::string &name);
+  GtkWidget * getComboEntry(const std::string &name);
 
  private:
   acc::TransactionInterface &m_transactionInterface;
