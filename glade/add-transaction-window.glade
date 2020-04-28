@@ -30,6 +30,10 @@
       <object class="GtkBox" id="mainBox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
+        <property name="margin_left">50</property>
+        <property name="margin_right">50</property>
+        <property name="margin_top">50</property>
+        <property name="margin_bottom">50</property>
         <property name="orientation">vertical</property>
         <property name="spacing">21</property>
         <child>
@@ -86,12 +90,6 @@
                         <property name="model">monthStore</property>
                         <property name="has_entry">True</property>
                         <property name="entry_text_column">0</property>
-                        <child>
-                          <object class="GtkCellRendererText" id="monthRender"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
                         <child internal-child="entry">
                           <object class="GtkEntry">
                             <property name="can_focus">False</property>
@@ -118,12 +116,6 @@
                         <property name="model">dayStore</property>
                         <property name="has_entry">True</property>
                         <property name="entry_text_column">0</property>
-                        <child>
-                          <object class="GtkCellRendererText" id="dayRender"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
                         <child internal-child="entry">
                           <object class="GtkEntry">
                             <property name="can_focus">False</property>
@@ -147,12 +139,6 @@
                         <property name="model">yearStore</property>
                         <property name="has_entry">True</property>
                         <property name="entry_text_column">0</property>
-                        <child>
-                          <object class="GtkCellRendererText" id="yearRender"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
                         <child internal-child="entry">
                           <object class="GtkEntry">
                             <property name="can_focus">False</property>
@@ -204,7 +190,8 @@
           <object class="GtkButtonBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="spacing">209</property>
+            <property name="halign">end</property>
+            <property name="spacing">6</property>
             <property name="layout_style">center</property>
             <child>
               <object class="GtkButton" id="submitButton">
@@ -216,6 +203,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>
@@ -229,6 +217,7 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -236,6 +225,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
+            <property name="pack_type">end</property>
             <property name="position">2</property>
           </packing>
         </child>
