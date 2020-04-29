@@ -11,15 +11,24 @@ class TransactionInterface {
 public:
   virtual ~TransactionInterface() {}
 
+  enum DataError {
+    NAME,
+    DATE,
+    AMOUNT
+  };
+
   using TransactionsReceived = Signal<void(std::vector<acc::Transaction>)>;
   using InsertFailed = Signal<void()>;
+  using InvalidData = Signal<void(DataError)>;
 
   virtual void addTransaction(const Transaction &transaction) = 0;
   virtual void deleteSelected() = 0;
   virtual void requestTransactions() = 0;
   virtual void selectTransaction(const uint64_t &id, bool select) = 0;
+
   virtual TransactionsReceived &transactionsReceived() = 0;
   virtual InsertFailed &insertFailed() = 0;
+  virtual InvalidData &invalidData() = 0;
 };
 } // namespace acc
 
