@@ -1,6 +1,5 @@
 #include <gtk-accounting/TransactionHandler.h>
-
-#include <iostream>
+#include <gtk-accounting/Time.h>
 
 namespace acc {
 
@@ -12,6 +11,17 @@ void TransactionHandler::addTransaction(const Transaction &transaction) {
 }
 
 void TransactionHandler::addTransactionInternal(const Transaction &transaction) {
+  DateResult result = stringToDate(transaction.date);
+  if (result.success()) {
+    Date date = result.object();
+    int dayLimit = getMonthDayCount(date.month, date.year);
+    LOG(DEBUG,m_logger) << "addTransactionInternal(): dayLimit: " << dayLimit << ", day: " << date.day;
+    if (date.day > dayLimit) {
+      m_invalidData(DATE);
+      return;
+    }
+  }
+
   if (!m_database.insertTransactions({transaction})) {
     m_insertFailed();
   }
@@ -61,5 +71,7 @@ TransactionInterface::TransactionsReceived &TransactionHandler::transactionsRece
 }
 
 TransactionInterface::InsertFailed &TransactionHandler::insertFailed() { return m_insertFailed; }
+
+TransactionInterface::InvalidData &TransactionHandler::invalidData() { return m_invalidData; }
 
 }  // namespace acc
