@@ -28,9 +28,11 @@ class TransactionHandler : public TransactionInterface {
   void selectTransaction(const uint64_t &id, bool select);
   TransactionsReceived &transactionsReceived();
   InsertFailed &insertFailed();
+  InvalidData &invalidData();
 
   TransactionsReceived m_transactionsReceived;
   InsertFailed m_insertFailed;
+  InvalidData m_invalidData;
 
  private:
   void addTransactionInternal(const Transaction &transaction);
