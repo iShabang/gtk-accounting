@@ -24,7 +24,7 @@ void AddTransactionPopup::show() {
   m_builder->get_widget("cancelButton", cancelButton);
   cancelButton->signal_clicked().connect([this]() { onCancel(); });
 
-  // Get combo boxes and list stores
+  // Setup combo box stores
   addComboData("monthStore", 1, 12);
   addComboData("dayStore", 1, 31);
   addComboData("yearStore", 2000, 2020);
