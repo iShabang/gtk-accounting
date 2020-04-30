@@ -4,12 +4,16 @@
 #include <gtkmm/button.h>
 #include <gtkmm/combobox.h>
 
-#include <string>
-#include <sstream>
 #include <iomanip>
+#include <sstream>
+#include <string>
 
 AddTransactionPopup::AddTransactionPopup(acc::TransactionInterface &tran)
-    : m_transactionInterface(tran), m_logger("AddTransactionPopup") {}
+    : m_transactionInterface(tran),
+      m_logger("AddTransactionPopup"),
+      m_insertSuccessConn(tran.insertSuccess().connect([this]() { onInsertSuccess(); })),
+      m_invalidDataConn(
+          tran.invalidData().connect([this](DataError error) { onInvalidData(error); })) {}
 
 void AddTransactionPopup::show() {
   // Create Builder instance of popup window
@@ -42,38 +46,44 @@ void AddTransactionPopup::show() {
 }
 
 void AddTransactionPopup::onSubmit() {
-  LOG(acc::DEBUG, m_logger) << "onSubmit()";
-
+  bool success = true;
   acc::Transaction data;
 
   Gtk::Entry *entry = nullptr;
   m_builder->get_widget("nameEntry", entry);
-  if (entry) {
+  success += entry != nullptr;
+  if (success) {
     data.name = entry->get_text();
     entry = nullptr;
   }
 
   m_builder->get_widget("amountEntry", entry);
-  if (entry) {
+  success += entry != nullptr;
+  if (success) {
     data.amount = std::stod(entry->get_text());
     entry = nullptr;
   }
 
-  std::stringstream ss;
-  ss << std::setfill('0');
-  ss << std::setw(2) << getComboText("monthCombo");
-  ss << std::setw(2) << getComboText("dayCombo");
-  ss << getComboText("yearCombo");
-  data.date = ss.str();
+  if (success) {
+    std::stringstream ss;
+    ss << std::setfill('0');
+    ss << std::setw(2) << getComboText("monthCombo");
+    ss << std::setw(2) << getComboText("dayCombo");
+    ss << getComboText("yearCombo");
+    data.date = ss.str();
+  }
 
-  LOG(acc::DEBUG, m_logger) << "transaction: name: " << data.name << " date: " << data.date
-                            << " amount: " << data.amount;
+  if (success) {
+    LOG(acc::DEBUG, m_logger) << "onSubmit(): transaction: name: " << data.name
+                              << " date: " << data.date << " amount: " << data.amount;
 
-  m_transactionInterface.addTransaction(data);
-  m_transactionInterface.requestTransactions();
-
-  destroy();
+    m_transactionInterface.addTransaction(data);
+    m_transactionInterface.requestTransactions();
+  } else {
+    LOG(acc::DEBUG, m_logger) << "onSubmit(): Failed to retrieve data from GTK";
+  }
 }
+
 void AddTransactionPopup::onCancel() {
   LOG(acc::DEBUG, m_logger) << "onCancel()";
   destroy();
@@ -84,6 +94,15 @@ void AddTransactionPopup::onHide() {
   destroy();
 }
 
+void AddTransactionPopup::onInsertSuccess() { destroy(); }
+
+void AddTransactionPopup::onInvalidData(DataError error) {
+  LOG(acc::DEBUG, m_logger) << "onInvalidData(): error " << error;
+  if (error == acc::TransactionInterface::DATE) {
+    showDateError();
+  }
+}
+
 void AddTransactionPopup::destroy() {
   m_builder.reset();
   delete m_window;
@@ -91,7 +110,7 @@ void AddTransactionPopup::destroy() {
 
 void AddTransactionPopup::addComboData(const std::string &storeName, const int &start,
                                        const int &end) {
-  list_store store = list_store::cast_static(m_builder->get_object(storeName));
+  ListStore store = ListStore::cast_static(m_builder->get_object(storeName));
   GtkTreeIter iter;
   for (auto i = start; i <= end; i++) {
     gtk_list_store_append(GTK_LIST_STORE(store->gobj()), &iter);
@@ -110,9 +129,22 @@ std::string AddTransactionPopup::getComboText(const std::string &name) {
   return text;
 }
 
-GtkWidget * AddTransactionPopup::getComboEntry(const std::string &name) {
+GtkWidget *AddTransactionPopup::getComboEntry(const std::string &name) {
   Gtk::ComboBox *comboBox = nullptr;
   m_builder->get_widget(name.c_str(), comboBox);
   GtkWidget *entry = gtk_bin_get_child(GTK_BIN(comboBox->gobj()));
   return entry;
+}
+
+void AddTransactionPopup::showDateError() {
+  // update the label to show a date error message
+  Gtk::Label *label = nullptr;
+  m_builder->get_widget("addTransactionLabel",label);
+  if (!label) {
+    LOG(acc::DEBUG,m_logger) << "showDateError: label not found";
+    return;
+  }
+
+  label->set_text("Invalid date entered");
+  // maybe turn the label red
 }
