@@ -22,9 +22,12 @@ void TransactionHandler::addTransactionInternal(const Transaction &transaction) 
     }
   }
 
-  if (!m_database.insertTransactions({transaction})) {
+  if (m_database.insertTransactions({transaction})) {
+    m_insertSuccess();
+  } else {
     m_insertFailed();
   }
+
 }
 
 void TransactionHandler::deleteSelected() {
@@ -71,6 +74,8 @@ TransactionInterface::TransactionsReceived &TransactionHandler::transactionsRece
 }
 
 TransactionInterface::InsertFailed &TransactionHandler::insertFailed() { return m_insertFailed; }
+
+TransactionInterface::InsertSuccess &TransactionHandler::insertSuccess() { return m_insertSuccess; }
 
 TransactionInterface::InvalidData &TransactionHandler::invalidData() { return m_invalidData; }
 

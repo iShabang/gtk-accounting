@@ -19,6 +19,7 @@ public:
 
   using TransactionsReceived = Signal<void(std::vector<acc::Transaction>)>;
   using InsertFailed = Signal<void()>;
+  using InsertSuccess = Signal<void()>;
   using InvalidData = Signal<void(DataError)>;
 
   virtual void addTransaction(const Transaction &transaction) = 0;
@@ -28,6 +29,7 @@ public:
 
   virtual TransactionsReceived &transactionsReceived() = 0;
   virtual InsertFailed &insertFailed() = 0;
+  virtual InsertSuccess &insertSuccess() = 0;
   virtual InvalidData &invalidData() = 0;
 };
 } // namespace acc

@@ -26,12 +26,15 @@ class TransactionHandler : public TransactionInterface {
   void deleteSelected();
   void requestTransactions();
   void selectTransaction(const uint64_t &id, bool select);
+
   TransactionsReceived &transactionsReceived();
   InsertFailed &insertFailed();
+  InsertSuccess &insertSuccess();
   InvalidData &invalidData();
 
   TransactionsReceived m_transactionsReceived;
   InsertFailed m_insertFailed;
+  InsertSuccess m_insertSuccess;
   InvalidData m_invalidData;
 
  private:
