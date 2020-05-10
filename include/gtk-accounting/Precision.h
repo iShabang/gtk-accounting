@@ -5,7 +5,7 @@
 
 namespace acc {
 
-  std::string floatToString(const float &value);
+  std::string doubleToString(const double &value);
 
 }
 

@@ -31,7 +31,7 @@ void Table::onTransactions(std::vector<acc::Transaction> data) {
 
       gtk_list_store_set(m_listStore->gobj(), &iter, MODEL_SELECT, false, MODEL_NAME,
                          i.name.c_str(), MODEL_DATE, acc::formatDate(i.date).c_str(), MODEL_AMOUNT,
-                         acc::floatToString(i.amount).c_str(), MODEL_ID, i.id, -1);
+                         acc::doubleToString(i.amount).c_str(), MODEL_ID, i.id, -1);
     }
   }
 }
