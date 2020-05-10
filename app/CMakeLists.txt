@@ -1,6 +1,7 @@
 add_executable(gtk-accounting
                main.cpp
                MenuBox.cpp
+               InfoBox.cpp
                Builder.cpp
                Facade.cpp
                Table.cpp
