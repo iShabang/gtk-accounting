@@ -1,17 +1,21 @@
 #ifndef _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_
 #define _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_
 
-#include <gtk-accounting/Transaction.h>
 #include <gtk-accounting/Signal.h>
+#include <gtk-accounting/Transaction.h>
 
 #include <vector>
 
-namespace acc {
-class TransactionInterface {
-public:
+namespace acc
+{
+
+class TransactionInterface
+{
+ public:
   virtual ~TransactionInterface() {}
 
-  enum DataError {
+  enum DataError
+  {
     NAME,
     DATE,
     AMOUNT
@@ -21,6 +25,7 @@ public:
   using InsertFailed = Signal<void()>;
   using InsertSuccess = Signal<void()>;
   using InvalidData = Signal<void(DataError)>;
+  using CurrentTotal = Signal<void(double)>;
 
   virtual void addTransaction(const Transaction &transaction) = 0;
   virtual void deleteSelected() = 0;
@@ -31,7 +36,9 @@ public:
   virtual InsertFailed &insertFailed() = 0;
   virtual InsertSuccess &insertSuccess() = 0;
   virtual InvalidData &invalidData() = 0;
+  virtual CurrentTotal &currentTotal() = 0;
 };
-} // namespace acc
 
-#endif // _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_
+}  // namespace acc
+
+#endif  // _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_

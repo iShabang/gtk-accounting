@@ -9,9 +9,11 @@
 #include <unordered_map>
 #include <utility>
 
-namespace acc {
+namespace acc
+{
 
-class TransactionHandler : public TransactionInterface {
+class TransactionHandler : public TransactionInterface
+{
  public:
   TransactionHandler(DatabaseInterface &database, DispatchInterface &dispatcher);
 
@@ -31,17 +33,20 @@ class TransactionHandler : public TransactionInterface {
   InsertFailed &insertFailed();
   InsertSuccess &insertSuccess();
   InvalidData &invalidData();
+  CurrentTotal &currentTotal();
 
   TransactionsReceived m_transactionsReceived;
   InsertFailed m_insertFailed;
   InsertSuccess m_insertSuccess;
   InvalidData m_invalidData;
+  CurrentTotal m_currentTotal;
 
  private:
   void addTransactionInternal(const Transaction &transaction);
   void requestTransactionsInternal();
   void deleteSelectedInternal();
   void selectTransactionInternal(const uint64_t &id, bool select);
+  double sumValues(const std::vector<Transaction> &data);
 
  private:
   DatabaseInterface &m_database;
