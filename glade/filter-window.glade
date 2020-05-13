@@ -12,8 +12,7 @@
   </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="can_focus">False</property>
-    <property name="type">popup</property>
-    <property name="type_hint">dialog</property>
+    <property name="type_hint">utility</property>
     <child type="titlebar">
       <placeholder/>
     </child>
