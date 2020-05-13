@@ -142,7 +142,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="newFilterButton">
                     <property name="label">gtk-new</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
