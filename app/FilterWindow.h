@@ -3,22 +3,27 @@
 
 #include <gtk-accounting/LogChannel.h>
 #include <gtkmm/builder.h>
+#include <gtkmm/window.h>
 
 class FilterWindow
 {
     public:
     FilterWindow();
 
-    FilterWindow(const FilterWindow &) = 0;
-    FilterWindow(FilterWindow &&) = 0;
-    FilterWindow &operator=(const FilterWindow &) = 0;
-    FilterWindow &operator=(FilterWindow &&) = 0;
+    FilterWindow(const FilterWindow &) = delete;
+    FilterWindow(FilterWindow &&) = delete;
+    FilterWindow &operator=(const FilterWindow &) = delete;
+    FilterWindow &operator=(FilterWindow &&) = delete;
 
+    // Public methods
     void show();
 
     private:
+
+    // Signal Handlers
     void onHideWindow();
 
+    // Private helper methods
     void destroy();
 
     private:
