@@ -3,8 +3,9 @@
 #include <gtkmm/button.h>
 
 MenuBox::MenuBox(acc::TransactionInterface &trans, Builder &builder,
-                 AddTransactionPopup &addTranPopup)
-    : m_tranInterface(trans), m_addTranPopup(addTranPopup), m_log("MenuBox") {
+                 AddTransactionPopup &addTranPopup,
+                 FilterWindow &filterWindow)
+    : m_tranInterface(trans), m_addTranPopup(addTranPopup), m_filterWindow(filterWindow), m_log("MenuBox") {
   connectSignals(builder);
 }
 
@@ -16,16 +17,23 @@ void MenuBox::onDelete() {
   m_tranInterface.requestTransactions();
 }
 
-void MenuBox::connectSignals(Builder &builder) {
-  Gtk::Button *addButton = nullptr;
-  builder.getWidget("addTransactionButton", addButton);
-  if (addButton) {
-    addButton->signal_clicked().connect([this]() { onAdd(); });
-  }
+void MenuBox::onNewFilter()
+{
+  m_filterWindow.show();
+}
 
-  Gtk::Button *deleteButton = nullptr;
-  builder.getWidget("deleteTransactionButton", deleteButton);
-  if (deleteButton) {
-    deleteButton->signal_clicked().connect([this]() { onDelete(); });
+void MenuBox::connectSignals(Builder &builder) {
+  connectClick(builder,"addTransactionButton",[this](){ onAdd(); });
+  connectClick(builder,"deleteTransactionButton",[this](){ onDelete(); });
+  connectClick(builder,"newFilterButton",[this](){ onNewFilter(); });
+}
+
+void MenuBox::connectClick(Builder &builder, const std::string &widgetName, std::function<void()> method)
+{
+  Gtk::Button *button = nullptr;
+  builder.getWidget(widgetName,button);
+  if (button)
+  {
+    button->signal_clicked().connect(method);
   }
 }
