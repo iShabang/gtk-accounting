@@ -8,6 +8,7 @@
 #include "InfoBox.h"
 #include "MenuBox.h"
 #include "Table.h"
+#include "FilterWindow.h"
 
 class Facade
 {
@@ -20,6 +21,7 @@ class Facade
   Builder m_builder;
   Table m_table;
   AddTransactionPopup m_addTranPopup;
+  FilterWindow m_filterWindow;
   MenuBox m_menuBox;
   InfoBox m_infoBox;
 };
