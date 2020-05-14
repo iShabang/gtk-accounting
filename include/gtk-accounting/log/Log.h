@@ -10,6 +10,9 @@ namespace acc {
 
 enum LogLevel { DEBUG, WARNING, ERROR, CRITICAL };
 
+/* Object used to send log messages to the log dispatcher using stream operators.
+ * This is not intended to be used directly. Rather, other classes should use
+ * a LogChannel with the LOG macro */
 class Log {
  public:
   Log() : logger(LogDispatcher::getInstance()) {}

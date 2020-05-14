@@ -8,6 +8,7 @@
 
 namespace acc {
 
+/* Implementation of DatabaseInterfaced using the Sqlite3 C++ Library */
 class SqliteImplementation : public DatabaseInterface {
 public:
   SqliteImplementation();
@@ -19,19 +20,22 @@ public:
   SqliteImplementation &operator=(SqliteImplementation &&) = delete;
 
 private:
+  // DatabaseInterface Methods
   bool isOpen() const;
   Result<DatabaseResult<Transaction>, std::string> queryTransactions();
   bool insertTransactions(std::vector<Transaction>);
   bool deleteTransactions(std::vector<uint64_t>);
 
+  // Private Helper Methods
   std::string getQuery();
   void createTables();
 
 private:
-  sqlite3 *m_db;
+  sqlite3 *m_db; 
   bool m_isOpen;
   LogChannel m_log;
 };
+
 } // namespace acc
 
 #endif // _GTK_ACCOUNTING_SQLITE_IMPLEMENTATION_H_

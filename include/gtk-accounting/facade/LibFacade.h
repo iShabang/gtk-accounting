@@ -8,6 +8,8 @@
 
 namespace acc {
 
+/* Implementation of LibFacadeInterface that constructs and holds references
+ * to all lifetime library objects */
 class LibFacade : public LibFacadeInterface {
  public:
   LibFacade();

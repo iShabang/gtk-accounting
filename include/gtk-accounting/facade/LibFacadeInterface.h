@@ -6,6 +6,8 @@
 #include <gtk-accounting/transaction/TransactionInterface.h>
 
 namespace acc {
+
+/* Interface for external applications to access running library interfaces */
 class LibFacadeInterface {
  public:
   virtual ~LibFacadeInterface() {}

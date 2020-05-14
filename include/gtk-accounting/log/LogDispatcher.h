@@ -5,6 +5,8 @@
 
 namespace acc {
 
+/* Dispatcher used to send log messages to a separate thread. This helps keep log messages async
+ * and has less of an impact on the application's speed while logging. */
 class LogDispatcher {
  private:
   static LogDispatcher instance;

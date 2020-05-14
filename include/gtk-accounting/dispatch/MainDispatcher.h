@@ -11,6 +11,10 @@
 
 namespace acc {
 
+/* Dispatch queue implementing the DispatchInterface. Utilizes a thread and a 
+ * condition variable to listen for and run tasks in a single thread. This
+ * keeps all library calls thread safe and sequential.
+ */
 class MainDispatcher : public DispatchInterface {
  public:
   MainDispatcher();
@@ -22,10 +26,13 @@ class MainDispatcher : public DispatchInterface {
   MainDispatcher &operator=(MainDispatcher &&) = delete;
 
  private:
+  // DispatchInterface methods
   void queueEvent(DispatchEvent);
   void shutdown();
 
  private:
+  /* Internal thread object that actually runs the events. All library function calls
+   * will basically live here. */
   class DispatchThread {
    public:
     DispatchThread();
@@ -38,6 +45,8 @@ class MainDispatcher : public DispatchInterface {
 
     void queueEvent(DispatchEvent);
     void shutdown();
+
+    /* Main function of the thread called by the OS */
     void threadFunction();
 
    private:

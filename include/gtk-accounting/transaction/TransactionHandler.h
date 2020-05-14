@@ -12,6 +12,8 @@
 namespace acc
 {
 
+/* Implementation of TransactionInterface that communicates with the database and keeps track of
+ * which transactions are currently selected */
 class TransactionHandler : public TransactionInterface
 {
  public:
