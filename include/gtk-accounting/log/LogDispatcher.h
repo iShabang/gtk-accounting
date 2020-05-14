@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_LOG_DISPATCHER_H_
 #define _GTK_ACCOUNTING_LOG_DISPATCHER_H_
 
-#include <gtk-accounting/MainDispatcher.h>
+#include <gtk-accounting/dispatch/MainDispatcher.h>
 
 namespace acc {
 

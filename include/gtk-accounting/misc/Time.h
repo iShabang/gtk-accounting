@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_TIME_H_
 #define _GTK_ACCOUNTING_TIME_H_
 
-#include <gtk-accounting/Result.h>
+#include <gtk-accounting/misc/Result.h>
 
 #include <string>
 

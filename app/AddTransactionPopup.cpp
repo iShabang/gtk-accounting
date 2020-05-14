@@ -1,6 +1,6 @@
 #include "AddTransactionPopup.h"
 
-#include <gtk-accounting/Time.h>
+#include <gtk-accounting/misc/Time.h>
 #include <gtkmm/button.h>
 #include <gtkmm/combobox.h>
 

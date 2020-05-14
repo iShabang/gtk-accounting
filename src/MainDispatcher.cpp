@@ -1,4 +1,4 @@
-#include <gtk-accounting/MainDispatcher.h>
+#include <gtk-accounting/dispatch/MainDispatcher.h>
 #include <iostream>
 #include <unistd.h>
 

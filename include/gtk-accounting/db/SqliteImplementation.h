@@ -1,8 +1,8 @@
 #ifndef _GTK_ACCOUNTING_SQLITE_IMPLEMENTATION_H_
 #define _GTK_ACCOUNTING_SQLITE_IMPLEMENTATION_H_
 
-#include <gtk-accounting/DatabaseInterface.h>
-#include <gtk-accounting/LogChannel.h>
+#include <gtk-accounting/db/DatabaseInterface.h>
+#include <gtk-accounting/log/LogChannel.h>
 
 #include <sqlite3.h>
 

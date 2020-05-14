@@ -1,10 +1,10 @@
 #ifndef _GTK_ACCOUNTING_LIB_FACADE_H_
 #define _GTK_ACCOUNTING_LIB_FACADE_H_
 
-#include <gtk-accounting/LibFacadeInterface.h>
-#include <gtk-accounting/MainDispatcher.h>
-#include <gtk-accounting/SqliteImplementation.h>
-#include <gtk-accounting/TransactionHandler.h>
+#include <gtk-accounting/facade/LibFacadeInterface.h>
+#include <gtk-accounting/dispatch/MainDispatcher.h>
+#include <gtk-accounting/db/SqliteImplementation.h>
+#include <gtk-accounting/transaction/TransactionHandler.h>
 
 namespace acc {
 

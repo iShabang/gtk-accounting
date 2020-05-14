@@ -3,8 +3,8 @@
 
 #include "Builder.h"
 
-#include <gtk-accounting/TransactionInterface.h>
-#include <gtk-accounting/LogChannel.h>
+#include <gtk-accounting/transaction/TransactionInterface.h>
+#include <gtk-accounting/log/LogChannel.h>
 
 class InfoBox
 {

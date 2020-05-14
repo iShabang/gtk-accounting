@@ -1,4 +1,4 @@
-#include <gtk-accounting/LogDispatcher.h>
+#include <gtk-accounting/log/LogDispatcher.h>
 
 #include <iostream>
 

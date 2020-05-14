@@ -1,4 +1,4 @@
-#include <gtk-accounting/SqliteImplementation.h>
+#include <gtk-accounting/db/SqliteImplementation.h>
 
 #include <iostream>
 #include <sstream>

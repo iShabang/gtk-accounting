@@ -1,6 +1,6 @@
 #include "Facade.h"
 
-#include <gtk-accounting/LibFacade.h>
+#include <gtk-accounting/facade/LibFacade.h>
 #include <iostream>
 #include <gtkmm/window.h>
 #include <gtkmm/application.h>

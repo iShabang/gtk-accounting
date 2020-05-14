@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_APP_FILTER_WINDOW_H_
 #define _GTK_ACCOUNTING_APP_FILTER_WINDOW_H_
 
-#include <gtk-accounting/LogChannel.h>
+#include <gtk-accounting/log/LogChannel.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/window.h>
 

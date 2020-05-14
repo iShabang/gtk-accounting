@@ -1,8 +1,8 @@
 #ifndef _GTK_ACCOUNTING_APP_ADD_TRANSACTION_POPUP_H_
 #define _GTK_ACCOUNTING_APP_ADD_TRANSACTION_POPUP_H_
 
-#include <gtk-accounting/LogChannel.h>
-#include <gtk-accounting/TransactionInterface.h>
+#include <gtk-accounting/log/LogChannel.h>
+#include <gtk-accounting/transaction/TransactionInterface.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/window.h>

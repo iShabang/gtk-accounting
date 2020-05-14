@@ -1,5 +1,5 @@
-#include <gtk-accounting/Time.h>
-#include <gtk-accounting/TransactionHandler.h>
+#include <gtk-accounting/misc/Time.h>
+#include <gtk-accounting/transaction/TransactionHandler.h>
 
 namespace acc
 {

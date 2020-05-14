@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_APP_FACADE_H_
 #define _GTK_ACCOUNTING_APP_FACADE_H_
 
-#include <gtk-accounting/LibFacadeInterface.h>
+#include <gtk-accounting/facade/LibFacadeInterface.h>
 
 #include "AddTransactionPopup.h"
 #include "Builder.h"

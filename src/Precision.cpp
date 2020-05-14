@@ -1,4 +1,4 @@
-#include <gtk-accounting/Precision.h>
+#include <gtk-accounting/misc/Precision.h>
 #include <sstream>
 #include <iomanip>
 

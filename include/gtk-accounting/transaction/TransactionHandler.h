@@ -1,10 +1,10 @@
 #ifndef _GTK_ACCOUNTING_TRANSACTION_HANDLER_H_
 #define _GTK_ACCOUNTING_TRANSACTION_HANDLER_H_
 
-#include <gtk-accounting/DatabaseInterface.h>
-#include <gtk-accounting/DispatchInterface.h>
-#include <gtk-accounting/LogChannel.h>
-#include <gtk-accounting/TransactionInterface.h>
+#include <gtk-accounting/db/DatabaseInterface.h>
+#include <gtk-accounting/dispatch/DispatchInterface.h>
+#include <gtk-accounting/log/LogChannel.h>
+#include <gtk-accounting/transaction/TransactionInterface.h>
 
 #include <unordered_map>
 #include <utility>

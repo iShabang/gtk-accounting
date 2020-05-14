@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_LOG_CHANNEL_H_
 #define _GTK_ACCOUNTING_LOG_CHANNEL_H_
 
-#include <gtk-accounting/Log.h>
+#include <gtk-accounting/log/Log.h>
 
 #include <string>
 

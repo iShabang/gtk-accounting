@@ -1,4 +1,4 @@
-#include <gtk-accounting/LogChannel.h>
+#include <gtk-accounting/log/LogChannel.h>
 
 #include <sstream>
 

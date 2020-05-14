@@ -1,7 +1,7 @@
 #include "Table.h"
 
-#include <gtk-accounting/Precision.h>
-#include <gtk-accounting/Time.h>
+#include <gtk-accounting/misc/Precision.h>
+#include <gtk-accounting/misc/Time.h>
 
 #include <iostream>
 #include <string>

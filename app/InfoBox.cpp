@@ -1,6 +1,6 @@
 #include "InfoBox.h"
 
-#include <gtk-accounting/Precision.h>
+#include <gtk-accounting/misc/Precision.h>
 #include <gtkmm/label.h>
 #include <string>
 

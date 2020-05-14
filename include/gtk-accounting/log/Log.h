@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_LOG_H_
 #define _GTK_ACCOUNTING_LOG_H_
 
-#include <gtk-accounting/LogDispatcher.h>
+#include <gtk-accounting/log/LogDispatcher.h>
 
 #include <sstream>
 

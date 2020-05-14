@@ -1,8 +1,8 @@
 #ifndef _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_
 #define _GTK_ACCOUNTING_TRANSACTION_INTERFACE_H_
 
-#include <gtk-accounting/Signal.h>
-#include <gtk-accounting/Transaction.h>
+#include <gtk-accounting/signal/Signal.h>
+#include <gtk-accounting/transaction/Transaction.h>
 
 #include <vector>
 

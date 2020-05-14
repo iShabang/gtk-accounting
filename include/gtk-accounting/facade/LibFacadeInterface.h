@@ -1,9 +1,9 @@
 #ifndef _GTK_ACCOUNTING_LIB_FACADE_INTERFACE_H_
 #define _GTK_ACCOUNTING_LIB_FACADE_INTERFACE_H_
 
-#include <gtk-accounting/DatabaseInterface.h>
-#include <gtk-accounting/DispatchInterface.h>
-#include <gtk-accounting/TransactionInterface.h>
+#include <gtk-accounting/db/DatabaseInterface.h>
+#include <gtk-accounting/dispatch/DispatchInterface.h>
+#include <gtk-accounting/transaction/TransactionInterface.h>
 
 namespace acc {
 class LibFacadeInterface {

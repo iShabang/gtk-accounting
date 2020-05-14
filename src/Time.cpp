@@ -1,4 +1,4 @@
-#include <gtk-accounting/Time.h>
+#include <gtk-accounting/misc/Time.h>
 #include <time.h>
 
 #include <sstream>

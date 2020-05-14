@@ -1,7 +1,7 @@
 #ifndef _GTK_ACCOUNTING_MAIN_DISPATCHER_H_
 #define _GTK_ACCOUNTING_MAIN_DISPATCHER_H_
 
-#include <gtk-accounting/DispatchInterface.h>
+#include <gtk-accounting/dispatch/DispatchInterface.h>
 
 #include <condition_variable>
 #include <functional>

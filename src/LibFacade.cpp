@@ -1,4 +1,4 @@
-#include <gtk-accounting/LibFacade.h>
+#include <gtk-accounting/facade/LibFacade.h>
 
 namespace acc {
 
