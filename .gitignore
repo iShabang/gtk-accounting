@@ -1,3 +1,8 @@
 .clangd/
 build/
 compile_commands.json
+*.sh
+*~
+*.db
+*.sql
+*.txt
