@@ -1,16 +1,18 @@
 #ifndef _GTK_ACCOUNTING_LIB_FACADE_H_
 #define _GTK_ACCOUNTING_LIB_FACADE_H_
 
-#include <gtk-accounting/facade/LibFacadeInterface.h>
-#include <gtk-accounting/dispatch/MainDispatcher.h>
 #include <gtk-accounting/db/SqliteImplementation.h>
+#include <gtk-accounting/dispatch/MainDispatcher.h>
+#include <gtk-accounting/facade/LibFacadeInterface.h>
+#include <gtk-accounting/filter/FilterParser.h>
 #include <gtk-accounting/transaction/TransactionHandler.h>
 
-namespace acc {
-
+namespace acc
+{
 /* Implementation of LibFacadeInterface that constructs and holds references
  * to all lifetime library objects */
-class LibFacade : public LibFacadeInterface {
+class LibFacade : public LibFacadeInterface
+{
  public:
   LibFacade();
 
@@ -29,6 +31,7 @@ class LibFacade : public LibFacadeInterface {
   MainDispatcher m_dispatcher;
   SqliteImplementation m_database;
   TransactionHandler m_transactions;
+  FilterParser m_filterParser;
 };
 
 }  // namespace acc
