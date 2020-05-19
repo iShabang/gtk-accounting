@@ -14,6 +14,7 @@ endif()
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(GTK gtkmm-3.0 REQUIRED)
 pkg_check_modules(SQLITE sqlite3 REQUIRED)
+pkg_check_modules(EXPAT expat REQUIRED)
 
 add_subdirectory(src)
 add_subdirectory(app)
