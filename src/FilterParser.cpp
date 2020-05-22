@@ -8,15 +8,23 @@ namespace acc
 const int BUFF_SIZE = 1024;
 
 FilterParser::FilterParser(DispatchInterface &dispatcher)
-    : m_log("FilterParser"), m_state(&m_noElem), m_setter(nullptr)
+    : m_log("FilterParser"), m_dispatcher(dispatcher), m_state(&m_noElem), m_setter(&m_noElem)
 {
-  dispatcher.queueEvent([this]() { parse(); });
+}
+
+
+/******************************************************************************
+ * PUBLIC METHODS
+ *****************************************************************************/
+void FilterParser::parse(FilterCallback callback)
+{
+  m_dispatcher.queueEvent([this,callback](){ parseInternal(callback); });
 }
 
 /******************************************************************************
- * PRIVATE HELPER METHODS
+ * PRIVATE INTERNAL METHODS
  *****************************************************************************/
-void FilterParser::parse()
+void FilterParser::parseInternal(FilterCallback callback)
 {
   std::string path = "filters.xml";
   std::ifstream input(path);
@@ -58,6 +66,9 @@ void FilterParser::parse()
   }
 
   XML_ParserFree(parser);
+
+  callback(m_filters);
+  m_filters.clear();
 }
 
 FilterParser::State *FilterParser::findState(std::string elem)
@@ -86,19 +97,23 @@ void XMLCALL FilterParser::startElem(void *data, const char *elem, const char **
   FilterParser *parser = static_cast<FilterParser *>(data);
   ++parser->m_depth;
   parser->m_state->changeState(parser->findState(elem), *parser);
-  parser->m_state->processElem(*parser, attr);
+  parser->m_state->processElem(*parser,attr);
 }
 
 void XMLCALL FilterParser::endElem(void *data, const char *elem)
 {
   FilterParser *parser = static_cast<FilterParser *>(data);
   --parser->m_depth;
-  if (!parser->m_error && strcmp(elem, "Filter") == 0)
+  if (strcmp(elem, "Filter") == 0)
   {
-    LOG(DEBUG, parser->m_log) << "FilterParser::endElem(): pushing filter";
-    parser->m_filters.push_back(parser->m_current);
+    if (!parser->m_error)
+    {
+      LOG(DEBUG, parser->m_log) << "FilterParser::endElem(): pushing filter";
+      parser->m_filters.push_back(parser->m_current);
+    }
+    parser->m_error = false;
   }
-  parser->m_error = false;
+
 }
 
 void XMLCALL FilterParser::dataHandle(void *data, const char *value, int len)
@@ -155,7 +170,7 @@ void FilterParser::Setter::setMax(FilterParser &parser, const std::string &max)
  *****************************************************************************/
 void FilterParser::FilterState::processElem(FilterParser &parser, const char **attr)
 {
-  if (parser.m_depth == 2)
+  if (parser.m_depth == parser.OBJ_DEPTH)
   {
     parser.m_current = Filter();
     std::string name = "unnamed";
@@ -164,7 +179,7 @@ void FilterParser::FilterState::processElem(FilterParser &parser, const char **a
   }
   else
   {
-    LOG(DEBUG, parser.m_log) << "FilterState::processElem(): Invalid Filter tag";
+    LOG(DEBUG, parser.m_log) << "FilterState::processElem(): Invalid Filter depth";
     parser.m_error = true;
   }
 }
@@ -175,13 +190,25 @@ void FilterParser::FilterState::processElem(FilterParser &parser, const char **a
 void FilterParser::Date::processElem(FilterParser &parser, const char **attr)
 {
   (void)attr;
-  parser.m_setter = this;
+
+  if (parser.m_depth == parser.ATTR_DEPTH)
+    parser.m_setter = this;
+  else
+    parser.m_error = true;
 }
+
+void FilterParser::Date::endElem(FilterParser &parser, const char *elem)
+{
+  (void)elem;
+  parser.m_setter = &parser.m_noElem;
+}
+
 void FilterParser::Date::setMin(FilterParser &parser, const std::string &min)
 {
   parser.m_current.dateMin = min;
   parser.m_current.hasDate = true;
 }
+
 void FilterParser::Date::setMax(FilterParser &parser, const std::string &max)
 {
   parser.m_current.dateMax = max;
@@ -194,7 +221,16 @@ void FilterParser::Date::setMax(FilterParser &parser, const std::string &max)
 void FilterParser::Amount::processElem(FilterParser &parser, const char **attr)
 {
   (void)attr;
-  parser.m_setter = this;
+  if (parser.m_depth == parser.ATTR_DEPTH)
+    parser.m_setter = this;
+  else
+    parser.m_error = true;
+}
+
+void FilterParser::Amount::endElem(FilterParser &parser, const char *elem)
+{
+  (void)elem;
+  parser.m_setter = &parser.m_noElem;
 }
 
 void FilterParser::Amount::setMin(FilterParser &parser, const std::string &min)
@@ -214,7 +250,7 @@ void FilterParser::Amount::setMax(FilterParser &parser, const std::string &max)
  *****************************************************************************/
 void FilterParser::Pattern::processData(FilterParser &parser, const std::string &value)
 {
-  if (parser.m_depth == 3)
+  if (parser.m_depth == parser.ATTR_DEPTH)
   {
     parser.m_current.pattern = value;
     parser.m_current.hasPattern = true;
@@ -226,7 +262,7 @@ void FilterParser::Pattern::processData(FilterParser &parser, const std::string 
  *****************************************************************************/
 void FilterParser::Min::processData(FilterParser &parser, const std::string &value)
 {
-  if (parser.m_depth == 4 && parser.m_setter)
+  if (parser.m_depth == parser.VALUE_DEPTH)
   {
     parser.m_setter->setMin(parser, value);
   }
@@ -237,7 +273,7 @@ void FilterParser::Min::processData(FilterParser &parser, const std::string &val
  *****************************************************************************/
 void FilterParser::Max::processData(FilterParser &parser, const std::string &value)
 {
-  if (parser.m_depth == 4 && parser.m_setter)
+  if (parser.m_depth == parser.VALUE_DEPTH)
   {
     parser.m_setter->setMax(parser, value);
   }

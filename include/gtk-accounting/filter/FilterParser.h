@@ -1,15 +1,19 @@
 #ifndef _GTK_ACCOUNTING_FILTER_PARSER_H_
 #define _GTK_ACCOUNTING_FILTER_PARSER_H_
 
-#include <expat.h>
 #include <gtk-accounting/dispatch/DispatchInterface.h>
 #include <gtk-accounting/filter/Filter.h>
 #include <gtk-accounting/log/LogChannel.h>
 
 #include <vector>
+#include <functional>
+#include <expat.h>
 
 namespace acc
 {
+
+using FilterCallback = std::function<void(const std::vector<Filter> &filters)>;
+
 class FilterParser
 {
  public:
@@ -20,20 +24,28 @@ class FilterParser
   FilterParser &operator=(const FilterParser &) = delete;
   FilterParser &operator=(FilterParser &&) = delete;
 
- private:
-  void parse();
-
  public:
+  void parse(FilterCallback callback);
+
+ private:
+  void parseInternal(FilterCallback callback);
+
+ private:
   static void XMLCALL startElem(void *data, const char *elem, const char **attr);
   static void XMLCALL endElem(void *data, const char *elem);
   static void XMLCALL dataHandle(void *data, const char *value, int len);
 
  private:
   LogChannel m_log;
+  DispatchInterface &m_dispatcher;
   std::vector<Filter> m_filters;
   int m_depth;
   Filter m_current;
   bool m_error;
+
+  const uint8_t OBJ_DEPTH = 2;
+  const uint8_t ATTR_DEPTH = 3;
+  const uint8_t VALUE_DEPTH = 4;
 
  private:
   class State
@@ -52,7 +64,7 @@ class FilterParser
     virtual void setMax(FilterParser &parser, const std::string &max);
   };
 
-  class NoElem : public State
+  class NoElem : public State, public Setter
   {
   };
 
@@ -67,6 +79,7 @@ class FilterParser
     void processElem(FilterParser &parser, const char **attr);
     void setMin(FilterParser &parser, const std::string &min);
     void setMax(FilterParser &parser, const std::string &max);
+    void endElem(FilterParser &parser, const char *elem);
   };
 
   class Amount : public State, public Setter
@@ -75,6 +88,7 @@ class FilterParser
     void processElem(FilterParser &parser, const char **attr);
     void setMin(FilterParser &parser, const std::string &min);
     void setMax(FilterParser &parser, const std::string &max);
+    void endElem(FilterParser &parser, const char *elem);
   };
 
   class Pattern : public State, public Setter
