@@ -16,6 +16,14 @@
       <column type="guint64"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="filterStore">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name id -->
+      <column type="guint"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="mainWindow">
     <property name="name">mainWindow</property>
     <property name="can_focus">False</property>
@@ -120,14 +128,16 @@
               </packing>
             </child>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="filterBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
-                  <object class="GtkComboBox">
+                  <object class="GtkComboBox" id="filterCombo">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="model">filterStore</property>
                     <property name="has_entry">True</property>
+                    <property name="entry_text_column">0</property>
                     <child internal-child="entry">
                       <object class="GtkEntry">
                         <property name="can_focus">False</property>
