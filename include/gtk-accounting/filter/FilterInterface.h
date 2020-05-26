@@ -11,8 +11,8 @@ namespace acc
       virtual ~FilterInterface() {}
 
       virtual void addFilter(const Filter &filter) = 0;
-      virtual void deleteFilter() = 0;
-      virtual void selectFilter() = 0;
+      virtual void deleteFilter(uint16_t id) = 0;
+      virtual void selectFilter(uint16_t id) = 0;
   };
 }
 
