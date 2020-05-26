@@ -1,16 +1,19 @@
 #ifndef _GTK_ACCOUNTING_APP_MENU_BOX_H_
 #define _GTK_ACCOUNTING_APP_MENU_BOX_H_
 
-#include <gtk-accounting/transaction/TransactionInterface.h>
 #include <gtk-accounting/log/LogChannel.h>
+#include <gtk-accounting/transaction/TransactionInterface.h>
 
 #include "AddTransactionPopup.h"
-#include "FilterWindow.h"
 #include "Builder.h"
+#include "FilterBox.h"
+#include "FilterWindow.h"
 
-class MenuBox {
+class MenuBox
+{
  public:
-  MenuBox(acc::TransactionInterface &trans, Builder &builder, AddTransactionPopup &addTranPopup, FilterWindow &filterWindow);
+  MenuBox(acc::FilterInterface &filter, acc::TransactionInterface &trans, Builder &builder,
+          AddTransactionPopup &addTranPopup, FilterWindow &filterWindow);
 
  private:
   void onAdd();
@@ -28,6 +31,7 @@ class MenuBox {
   AddTransactionPopup &m_addTranPopup;
   FilterWindow &m_filterWindow;
   acc::LogChannel m_log;
+  FilterBox m_filterBox;
 };
 
 #endif  // _GTK_ACCOUNTING_APP_MENU_BOX_H_
