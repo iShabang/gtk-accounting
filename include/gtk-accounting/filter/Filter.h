@@ -21,6 +21,13 @@ namespace acc
 
     std::string name;
   };
+
+  struct FilterSmall
+  {
+    uint16_t id;
+    std::string name;
+  };
+
 }
 
 #endif // _GTK_ACCOUNTING_FILTER_H_
