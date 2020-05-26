@@ -4,6 +4,7 @@
 #include <gtk-accounting/db/SqliteImplementation.h>
 #include <gtk-accounting/dispatch/MainDispatcher.h>
 #include <gtk-accounting/facade/LibFacadeInterface.h>
+#include <gtk-accounting/filter/FilterHandler.h>
 #include <gtk-accounting/filter/FilterParser.h>
 #include <gtk-accounting/transaction/TransactionHandler.h>
 
@@ -25,6 +26,7 @@ class LibFacade : public LibFacadeInterface
  private:
   DatabaseInterface &database();
   DispatchInterface &dispatcher();
+  FilterInterface &filter();
   TransactionInterface &transaction();
 
  private:
@@ -32,6 +34,7 @@ class LibFacade : public LibFacadeInterface
   SqliteImplementation m_database;
   TransactionHandler m_transactions;
   FilterParser m_filterParser;
+  FilterHandler m_filterHandler;
 };
 
 }  // namespace acc

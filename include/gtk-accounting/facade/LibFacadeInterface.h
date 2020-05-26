@@ -3,6 +3,7 @@
 
 #include <gtk-accounting/db/DatabaseInterface.h>
 #include <gtk-accounting/dispatch/DispatchInterface.h>
+#include <gtk-accounting/filter/FilterInterface.h>
 #include <gtk-accounting/transaction/TransactionInterface.h>
 
 namespace acc {
@@ -14,6 +15,7 @@ class LibFacadeInterface {
 
   virtual DatabaseInterface &database() = 0;
   virtual DispatchInterface &dispatcher() = 0;
+  virtual FilterInterface &filter() = 0;
   virtual TransactionInterface &transaction() = 0;
 };
 }  // namespace acc
