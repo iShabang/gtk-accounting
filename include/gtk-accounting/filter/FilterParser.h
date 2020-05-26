@@ -17,7 +17,7 @@ using FilterCallback = std::function<void(const std::vector<Filter> &filters)>;
 class FilterParser
 {
  public:
-  FilterParser(DispatchInterface &dispatcher);
+  FilterParser(DispatchInterface &dispatcher, const std::string &path);
 
   FilterParser(const FilterParser &) = delete;
   FilterParser(FilterParser &&) = delete;
@@ -38,6 +38,7 @@ class FilterParser
  private:
   LogChannel m_log;
   DispatchInterface &m_dispatcher;
+  std::string m_path;
   std::vector<Filter> m_filters;
   int m_depth;
   Filter m_current;

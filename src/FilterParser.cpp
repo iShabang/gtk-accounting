@@ -7,8 +7,8 @@ namespace acc
 {
 const int BUFF_SIZE = 1024;
 
-FilterParser::FilterParser(DispatchInterface &dispatcher)
-    : m_log("FilterParser"), m_dispatcher(dispatcher), m_state(&m_noElem), m_setter(&m_noElem)
+FilterParser::FilterParser(DispatchInterface &dispatcher, const std::string &path)
+    : m_log("FilterParser"), m_dispatcher(dispatcher), m_path(path), m_state(&m_noElem), m_setter(&m_noElem)
 {
 }
 
@@ -26,11 +26,10 @@ void FilterParser::parse(FilterCallback callback)
  *****************************************************************************/
 void FilterParser::parseInternal(FilterCallback callback)
 {
-  std::string path = "filters.xml";
-  std::ifstream input(path);
+  std::ifstream input(m_path);
   if (!input)
   {
-    LOG(ERROR, m_log) << "Failed to open " << path << " for parsing";
+    LOG(ERROR, m_log) << "Failed to open " << m_path << " for parsing";
     return;
   }
 
@@ -40,6 +39,7 @@ void FilterParser::parseInternal(FilterCallback callback)
   XML_Parser parser = XML_ParserCreate(nullptr);
   XML_SetUserData(parser, this);
   XML_SetElementHandler(parser, startElem, endElem);
+  XML_SetCharacterDataHandler(parser, dataHandle);
 
   char buffer[BUFF_SIZE];
   std::fill(buffer, buffer + BUFF_SIZE, 0);
@@ -60,12 +60,9 @@ void FilterParser::parseInternal(FilterCallback callback)
   }
 
   LOG(DEBUG, m_log) << "FilterParser::parse(): parsing finished";
-  for (Filter f : m_filters)
-  {
-    LOG(DEBUG, m_log) << '\t' << f.name;
-  }
 
   XML_ParserFree(parser);
+  input.close();
 
   callback(m_filters);
   m_filters.clear();
