@@ -28,10 +28,13 @@ class FilterHandler : public FilterInterface
   void addFilter(const Filter &filter);
   void deleteFilter(uint16_t id);
   void selectFilter(uint16_t id);
+  void requestFilters();
+  FiltersReceived &filtersReceived();
 
   void addFilterInternal(const Filter &filter);
   void deleteFilterInternal(uint16_t id);
   void selectFilterInternal(uint16_t id);
+  void requestFiltersInternal();
 
  private:
   void onFiltersParsed(const std::vector<Filter> &filters);
@@ -44,6 +47,8 @@ class FilterHandler : public FilterInterface
   uint16_t m_currentId;
   std::map<uint16_t, Filter> m_filters;
   uint16_t m_selected;
+
+  FiltersReceived m_filtersReceived;
 };
 
 }  // namespace acc
