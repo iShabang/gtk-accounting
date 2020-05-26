@@ -5,20 +5,28 @@
 
 #include <sstream>
 
-
-namespace acc {
-
-enum LogLevel { DEBUG, WARNING, ERROR, CRITICAL };
+namespace acc
+{
+enum LogLevel
+{
+  DEBUG,
+  WARNING,
+  ERROR,
+  CRITICAL
+};
 
 /* Object used to send log messages to the log dispatcher using stream operators.
  * This is not intended to be used directly. Rather, other classes should use
  * a LogChannel with the LOG macro */
-class Log {
+class Log
+{
  public:
   Log() : logger(LogDispatcher::getInstance()) {}
-  std::ostringstream &getStream(LogLevel level, const std::string &channelName) {
+  std::ostringstream &getStream(LogLevel level, const std::string &channelName)
+  {
     std::string levelName;
-    switch (level) {
+    switch (level)
+    {
       case DEBUG:
         levelName = "DEBUG";
         break;
@@ -33,14 +41,14 @@ class Log {
         break;
     };
 
+    os.flags(std::ios::boolalpha);
     os << levelName << " [" << channelName << "]: ";
     return os;
   }
 
-  ~Log() {
-    logger.queueMessage(os.str());
-  }
-  static LogLevel getLevel() {
+  ~Log() { logger.queueMessage(os.str()); }
+  static LogLevel getLevel()
+  {
 #ifdef DEBUG_MODE
     return DEBUG;
 #else
