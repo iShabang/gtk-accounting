@@ -4,6 +4,8 @@ file(GLOB HEADER_LIST CONFIGURE_DEPENDS
 
 add_library(gtk-accounting-lib
             FilterParser.cpp
+            FilterHandler.cpp
+            FilterWriter.cpp
             LibFacade.cpp
             LogChannel.cpp
             LogDispatcher.cpp
