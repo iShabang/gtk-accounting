@@ -8,9 +8,17 @@
 
 #include "Builder.h"
 
-enum ViewColumns { VIEW_SELECT, VIEW_NAME, VIEW_DATE, VIEW_AMOUNT, VIEW_NUM_COLUMNS };
+enum ViewColumns
+{
+  VIEW_SELECT,
+  VIEW_NAME,
+  VIEW_DATE,
+  VIEW_AMOUNT,
+  VIEW_NUM_COLUMNS
+};
 
-enum ModelColumns {
+enum ModelColumns
+{
   MODEL_SELECT,
   MODEL_NAME,
   MODEL_DATE,
@@ -19,7 +27,8 @@ enum ModelColumns {
   MODEL_NUM_COLUMNS
 };
 
-class Table {
+class Table
+{
  public:
   Table(acc::TransactionInterface &tran, Builder &builder);
 

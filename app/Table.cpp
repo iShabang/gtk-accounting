@@ -12,7 +12,8 @@ Table::Table(acc::TransactionInterface &tran, Builder &builder)
       m_tranConn(tran.transactionsReceived().connect(
           [this](std::vector<acc::Transaction> data) { onTransactions(data); })),
       m_align(0.1),
-      m_logger("Table") {
+      m_logger("Table")
+{
   builder.getWidget("tableTreeView", m_treeView);
   m_listStore = Glib::RefPtr<Gtk::ListStore>::cast_static(builder.getObject("dataListStore"));
   setupColumns();
@@ -20,12 +21,15 @@ Table::Table(acc::TransactionInterface &tran, Builder &builder)
   m_tran.requestTransactions();
 }
 
-void Table::onTransactions(std::vector<acc::Transaction> data) {
+void Table::onTransactions(std::vector<acc::Transaction> data)
+{
   LOG(acc::DEBUG, m_logger) << "onTransactions(): length: " << data.size();
 
-  if (m_listStore && m_treeView) {
+  if (m_listStore && m_treeView)
+  {
     m_listStore->clear();
-    for (auto &&i : data) {
+    for (auto &&i : data)
+    {
       GtkTreeIter iter;
       gtk_list_store_append(m_listStore->gobj(), &iter);
 
@@ -36,15 +40,18 @@ void Table::onTransactions(std::vector<acc::Transaction> data) {
   }
 }
 
-void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table) {
+void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table)
+{
   LOG(acc::DEBUG, table->m_logger) << "onSelected()";
 
-  if (!renderer) {
+  if (!renderer)
+  {
     LOG(acc::DEBUG, table->m_logger) << "onSelected(): renderer object is null";
     return;
   }
 
-  if (!path) {
+  if (!path)
+  {
     LOG(acc::DEBUG, table->m_logger) << "onSelected(): data path is null";
     return;
   }
@@ -73,28 +80,31 @@ void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *tabl
   table->m_tran.selectTransaction(id, select);
 }
 
-void Table::setupColumns() {
+void Table::setupColumns()
+{
   addColumnRenderer("name", "text", VIEW_NAME);
   addColumnRenderer("date", "text", VIEW_DATE);
   addColumnRenderer("amount", "text", VIEW_AMOUNT);
 }
 
-void Table::connectRenderSignals() {
+void Table::connectRenderSignals()
+{
   GtkCellRendererToggle *cr =
       GTK_CELL_RENDERER_TOGGLE(gtk_builder_get_object(m_builder.getRef(), "selectRender"));
 
   g_signal_connect(cr, "toggled", G_CALLBACK(Table::onSelected), this);
 }
 
-void Table::addColumnRenderer(const std::string &nameBase, const std::string &attribute,
-                              int column) {
+void Table::addColumnRenderer(const std::string &nameBase, const std::string &attribute, int column)
+{
   std::string columnName = nameBase + "Column";
   std::string renderName = nameBase + "Render";
   GtkTreeViewColumn *vc =
       GTK_TREE_VIEW_COLUMN(gtk_builder_get_object(m_builder.getRef(), columnName.c_str()));
   GtkCellRenderer *cr =
       GTK_CELL_RENDERER(gtk_builder_get_object(m_builder.getRef(), renderName.c_str()));
-  if (vc && cr) {
+  if (vc && cr)
+  {
     gtk_tree_view_column_add_attribute(vc, cr, attribute.c_str(), column);
   }
 }
