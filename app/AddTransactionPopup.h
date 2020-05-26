@@ -4,12 +4,12 @@
 #include <gtk-accounting/log/LogChannel.h>
 #include <gtk-accounting/transaction/TransactionInterface.h>
 #include <gtkmm/builder.h>
-#include <gtkmm/liststore.h>
 #include <gtkmm/window.h>
+
+#include "ListStore.h"
 
 class AddTransactionPopup {
  private:
-  using ListStore = Glib::RefPtr<Gtk::ListStore>;
   using DataError = acc::TransactionInterface::DataError;
 
  public:
