@@ -36,10 +36,19 @@ void FilterHandler::selectFilter(uint16_t id)
 
 void FilterHandler::requestFilters()
 {
-  m_dispatcher.queueEvent([this](){ requestFiltersInternal(); });
+  m_dispatcher.queueEvent([this]() { requestFiltersInternal(); });
+}
+
+Filter FilterHandler::getSelected()
+{
+  if (m_selected)
+    return m_filters.at(m_selected);
+  else
+    return Filter();
 }
 
 FilterHandler::FiltersReceived &FilterHandler::filtersReceived() { return m_filtersReceived; }
+FilterHandler::Selected &FilterHandler::selected() { return m_selectedSignal; }
 
 void FilterHandler::addFilterInternal(const Filter &filter)
 {
@@ -53,14 +62,18 @@ void FilterHandler::deleteFilterInternal(uint16_t id)
   writeFilters();
 }
 
-void FilterHandler::selectFilterInternal(uint16_t id) { m_selected = id; }
+void FilterHandler::selectFilterInternal(uint16_t id)
+{
+  m_selected = id;
+  m_selectedSignal();
+}
 
 void FilterHandler::requestFiltersInternal()
 {
   std::vector<FilterSmall> filters;
   for (auto &&i : m_filters)
   {
-    filters.push_back({i.first,i.second.name});
+    filters.push_back({i.first, i.second.name});
   }
   m_filtersReceived(filters);
 }

@@ -29,7 +29,9 @@ class FilterHandler : public FilterInterface
   void deleteFilter(uint16_t id);
   void selectFilter(uint16_t id);
   void requestFilters();
+  Filter getSelected();
   FiltersReceived &filtersReceived();
+  Selected &selected();
 
   void addFilterInternal(const Filter &filter);
   void deleteFilterInternal(uint16_t id);
@@ -49,6 +51,7 @@ class FilterHandler : public FilterInterface
   uint16_t m_selected;
 
   FiltersReceived m_filtersReceived;
+  Selected m_selectedSignal;
 };
 
 }  // namespace acc

@@ -31,10 +31,10 @@ class LibFacade : public LibFacadeInterface
 
  private:
   MainDispatcher m_dispatcher;
-  SqliteImplementation m_database;
-  TransactionHandler m_transactions;
   FilterParser m_filterParser;
   FilterHandler m_filterHandler;
+  SqliteImplementation m_database;
+  TransactionHandler m_transactions;
 };
 
 }  // namespace acc

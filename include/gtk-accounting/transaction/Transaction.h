@@ -9,7 +9,7 @@ namespace acc {
   struct Transaction {
     uint64_t id;
     std::string name;
-    std::string date;
+    std::string date; // date format in YYYY-MM-DD
     double amount;
   };
 }

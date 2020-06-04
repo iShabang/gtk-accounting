@@ -6,11 +6,12 @@
 #include <iostream>
 #include <string>
 
-Table::Table(acc::TransactionInterface &tran, Builder &builder)
+Table::Table(acc::TransactionInterface &tran, acc::FilterInterface &filter, Builder &builder)
     : m_tran(tran),
       m_builder(builder),
       m_tranConn(tran.transactionsReceived().connect(
           [this](std::vector<acc::Transaction> data) { onTransactions(data); })),
+      m_filConn(filter.selected().connect([this]() { onFilterSelected(); })),
       m_align(0.1),
       m_logger("Table")
 {
@@ -34,11 +35,13 @@ void Table::onTransactions(std::vector<acc::Transaction> data)
       gtk_list_store_append(m_listStore->gobj(), &iter);
 
       gtk_list_store_set(m_listStore->gobj(), &iter, MODEL_SELECT, false, MODEL_NAME,
-                         i.name.c_str(), MODEL_DATE, acc::formatDate(i.date).c_str(), MODEL_AMOUNT,
+                         i.name.c_str(), MODEL_DATE, i.date.c_str(), MODEL_AMOUNT,
                          acc::doubleToString(i.amount).c_str(), MODEL_ID, i.id, -1);
     }
   }
 }
+
+void Table::onFilterSelected() { m_tran.requestTransactions(); }
 
 void Table::onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table)
 {

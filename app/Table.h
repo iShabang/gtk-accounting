@@ -1,6 +1,7 @@
 #ifndef _GTK_ACCOUNTING_APP_TABLE_H_
 #define _GTK_ACCOUNTING_APP_TABLE_H_
 
+#include <gtk-accounting/filter/FilterInterface.h>
 #include <gtk-accounting/log/LogChannel.h>
 #include <gtk-accounting/transaction/TransactionInterface.h>
 #include <gtkmm/liststore.h>
@@ -30,10 +31,11 @@ enum ModelColumns
 class Table
 {
  public:
-  Table(acc::TransactionInterface &tran, Builder &builder);
+  Table(acc::TransactionInterface &tran, acc::FilterInterface &filter, Builder &builder);
 
  private:
   void onTransactions(std::vector<acc::Transaction> data);
+  void onFilterSelected();
 
   static void onSelected(GtkCellRendererToggle *renderer, gchar *path, Table *table);
 
@@ -47,6 +49,7 @@ class Table
   Gtk::TreeView *m_treeView;
   Glib::RefPtr<Gtk::ListStore> m_listStore;
   acc::ScopedConnection m_tranConn;
+  acc::ScopedConnection m_filConn;
   float m_align;
   acc::LogChannel m_logger;
 };
