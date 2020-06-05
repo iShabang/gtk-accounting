@@ -7,10 +7,6 @@ namespace acc
 {
   struct Filter
   {
-    bool hasDate;
-    bool hasAmount;
-    bool hasPattern;
-
     std::string dateMin;
     std::string dateMax;
 

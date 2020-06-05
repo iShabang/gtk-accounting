@@ -21,11 +21,12 @@ void FilterWriter::write(const std::string &path, std::vector<Filter> &filters)
   {
     m_os << "<Filter name=\"" << i.name << "\">\n";
 
-    if (i.hasDate) writeDate(i);
+    if (i.dateMin.length() || i.dateMax.length()) writeDate(i);
 
-    if (i.hasAmount) writeAmount(i);
 
-    if (i.hasPattern) writePattern(i);
+    if (i.amountMin.length() || i.amountMax.length()) writeAmount(i);
+
+    if (i.pattern.length()) writePattern(i);
 
     m_os << "</Filter>\n";
   }
@@ -56,8 +57,8 @@ void FilterWriter::writeNumeric(const std::string &tag, const std::string &min,
                                 const std::string &max)
 {
   m_os << "<" << tag << ">\n";
-  writeMin(min);
-  writeMax(max);
+  if (min.length()) writeMin(min);
+  if (max.length()) writeMax(max);
   m_os << "</" << tag << ">\n";
 }
 

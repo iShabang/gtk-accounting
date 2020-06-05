@@ -203,13 +203,11 @@ void FilterParser::Date::endElem(FilterParser &parser, const char *elem)
 void FilterParser::Date::setMin(FilterParser &parser, const std::string &min)
 {
   parser.m_current.dateMin = min;
-  parser.m_current.hasDate = true;
 }
 
 void FilterParser::Date::setMax(FilterParser &parser, const std::string &max)
 {
   parser.m_current.dateMax = max;
-  parser.m_current.hasDate = true;
 }
 
 /******************************************************************************
@@ -233,13 +231,11 @@ void FilterParser::Amount::endElem(FilterParser &parser, const char *elem)
 void FilterParser::Amount::setMin(FilterParser &parser, const std::string &min)
 {
   parser.m_current.amountMin = min;
-  parser.m_current.hasAmount = true;
 }
 
 void FilterParser::Amount::setMax(FilterParser &parser, const std::string &max)
 {
   parser.m_current.amountMax = max;
-  parser.m_current.hasAmount = true;
 }
 
 /******************************************************************************
@@ -250,7 +246,6 @@ void FilterParser::Pattern::processData(FilterParser &parser, const std::string 
   if (parser.m_depth == parser.ATTR_DEPTH)
   {
     parser.m_current.pattern = value;
-    parser.m_current.hasPattern = true;
   }
 }
 

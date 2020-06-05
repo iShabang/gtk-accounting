@@ -188,48 +188,55 @@ void SqliteImplementation::createTables()
 
 bool SqliteImplementation::bindQuery(sqlite3_stmt *statement, const Filter &filter)
 {
-  double aMax = INT_MAX;
-  double aMin = 0;
-  if (filter.hasAmount)
-  {
-    aMax = std::stod(filter.amountMax);
-    aMin = std::stod(filter.amountMin);
-  }
-
-  LOG(DEBUG, m_log) << "bindQuery():\n"
-                    << "aMax: " << aMax << "\n"
-                    << "aMin: " << aMin;
-
   bool result = true;
   int code = 0;
 
-  result &= (code = (result) ? sqlite3_bind_double(statement, 1, aMin) : code) == SQLITE_OK;
-  result &= (code = (result) ? sqlite3_bind_double(statement, 2, aMax) : code) == SQLITE_OK;
+  double aMin = 0;
+  double aMax = INT_MAX;
+
+  try
+  {
+    if (filter.amountMin.length()) aMin = std::stod(filter.amountMin);
+    if (filter.amountMax.length()) aMax = std::stod(filter.amountMax);
+  }
+  catch (std::invalid_argument &e)
+  {
+    LOG(DEBUG, m_log) << "bindQuery(): std::stod invalid argument: " << e.what();
+  }
+  catch (std::out_of_range &e)
+  {
+    LOG(DEBUG, m_log) << "bindQuery(): std::stod out of range:  " << e.what();
+  }
+
+  if (filter.amountMin.length())
+  {
+    result &= (code = (result) ? sqlite3_bind_double(statement, 1, aMin) : code) == SQLITE_OK;
+  }
+
+  if (filter.amountMax.length())
+  {
+    result &= (code = (result) ? sqlite3_bind_double(statement, 2, aMax) : code) == SQLITE_OK;
+  }
 
   if (!result)
   {
-    LOG(DEBUG,m_log) << "bindQuery(): sqlite error: val: " << code << " msg: " << sqlite3_errstr(code);
+    LOG(DEBUG, m_log) << "bindQuery(): sqlite error: val: " << code
+                      << " msg: " << sqlite3_errstr(code);
   }
   return result;
 }
 
 std::string SqliteImplementation::getQuery(const Filter &filter)
 {
+  std::string pattern = (filter.pattern.length()) ? filter.pattern : "";
+  std::string dMin = (filter.dateMin.length()) ? " AND date >= '" + filter.dateMin + "'" : "";
+  std::string dMax = (filter.dateMax.length()) ? " AND date <= '" + filter.dateMax + "'" : "";
+  std::string aMin = (filter.amountMin.length()) ? " AND amount >= ?1" : "";
+  std::string aMax = (filter.amountMax.length()) ? " AND amount <= ?2" : "";
+
   std::stringstream query;
-
-  std::string pattern = (filter.hasPattern) ? filter.pattern : "";
-  
-  std::string dMin = " AND date >= '0000-00-00'";
-  std::string dMax = "";
-  if (filter.hasDate)
-  {
-    dMax = " AND date <= '" + filter.dateMax + "'";
-  }
-  
-
   query << "SELECT * FROM trans "
-  << "WHERE name LIKE '%" << pattern << "%'" << dMin << dMax
-  << " AND amount >= ? AND amount <= ?";
+        << "WHERE name LIKE '%" << pattern << "%'" << dMin << dMax << aMin << aMax;
 
   return query.str();
 }
