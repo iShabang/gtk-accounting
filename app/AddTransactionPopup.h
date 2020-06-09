@@ -26,10 +26,6 @@ class AddTransactionPopup {
 
   void destroy();
 
-  void addComboData(const std::string &storeName, const int &start, const int &end);
-  void setComboValue(const std::string &name, const int &value);
-  std::string getComboText(const std::string &name);
-  GtkWidget * getComboEntry(const std::string &name);
   void showDateError();
 
  private:

@@ -1,4 +1,5 @@
 #include "AddTransactionPopup.h"
+#include "ComboBoxMethods.h"
 
 #include <gtk-accounting/misc/Time.h>
 #include <gtkmm/button.h>
@@ -29,15 +30,15 @@ void AddTransactionPopup::show() {
   cancelButton->signal_clicked().connect([this]() { onCancel(); });
 
   // Setup combo box stores
-  addComboData("monthStore", 1, 12);
-  addComboData("dayStore", 1, 31);
-  addComboData("yearStore", 2000, 2020);
+  acc::Date currentDate = acc::getCurrentDate();
+  addComboData(*m_builder.get(), "monthStore", 1, 12);
+  addComboData(*m_builder.get(), "dayStore", 1, 31);
+  addComboData(*m_builder.get(), "yearStore", currentDate.year - 20, currentDate.year);
 
   // Add current date to combo box entries
-  acc::Date currentDate = acc::getCurrentDate();
-  setComboValue("monthCombo", currentDate.month);
-  setComboValue("dayCombo", currentDate.day);
-  setComboValue("yearCombo", currentDate.year);
+  setComboValue(*m_builder.get(), "monthCombo", currentDate.month);
+  setComboValue(*m_builder.get(), "dayCombo", currentDate.day);
+  setComboValue(*m_builder.get(), "yearCombo", currentDate.year);
 
   // Get the window and show it
   m_builder->get_widget("addTransactionPopup", m_window);
@@ -67,9 +68,9 @@ void AddTransactionPopup::onSubmit() {
   if (success) {
     std::stringstream ss;
     ss << std::setfill('0');
-    ss << std::setw(2) << getComboText("monthCombo");
-    ss << std::setw(2) << getComboText("dayCombo");
-    ss << getComboText("yearCombo");
+    ss << getComboText(*m_builder.get(), "yearCombo") << "-";
+    ss << std::setw(2) << getComboText(*m_builder.get(), "monthCombo") << "-";
+    ss << std::setw(2) << getComboText(*m_builder.get(), "dayCombo");
     data.date = ss.str();
   }
 
@@ -106,34 +107,6 @@ void AddTransactionPopup::onInvalidData(DataError error) {
 void AddTransactionPopup::destroy() {
   m_builder.reset();
   delete m_window;
-}
-
-void AddTransactionPopup::addComboData(const std::string &storeName, const int &start,
-                                       const int &end) {
-  ListStore store = ListStore::cast_static(m_builder->get_object(storeName));
-  GtkTreeIter iter;
-  for (auto i = start; i <= end; i++) {
-    gtk_list_store_append(GTK_LIST_STORE(store->gobj()), &iter);
-    gtk_list_store_set(GTK_LIST_STORE(store->gobj()), &iter, 0, std::to_string(i).c_str(), -1);
-  }
-}
-
-void AddTransactionPopup::setComboValue(const std::string &name, const int &value) {
-  GtkWidget *entry = getComboEntry(name);
-  gtk_entry_set_text(GTK_ENTRY(entry), std::to_string(value).c_str());
-}
-
-std::string AddTransactionPopup::getComboText(const std::string &name) {
-  GtkWidget *comboEntry = getComboEntry(name);
-  std::string text = gtk_entry_get_text(GTK_ENTRY(comboEntry));
-  return text;
-}
-
-GtkWidget *AddTransactionPopup::getComboEntry(const std::string &name) {
-  Gtk::ComboBox *comboBox = nullptr;
-  m_builder->get_widget(name.c_str(), comboBox);
-  GtkWidget *entry = gtk_bin_get_child(GTK_BIN(comboBox->gobj()));
-  return entry;
 }
 
 void AddTransactionPopup::showDateError() {
