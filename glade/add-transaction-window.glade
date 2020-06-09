@@ -4,20 +4,20 @@
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkListStore" id="dayStore">
     <columns>
-      <!-- column-name days -->
-      <column type="gchararray"/>
+      <!-- column-name value -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkListStore" id="monthStore">
     <columns>
-      <!-- column-name months -->
-      <column type="gchararray"/>
+      <!-- column-name value -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkListStore" id="yearStore">
     <columns>
-      <!-- column-name gchararray1 -->
-      <column type="gchararray"/>
+      <!-- column-name value -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkWindow" id="addTransactionPopup">
