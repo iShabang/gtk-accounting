@@ -14,6 +14,7 @@ namespace acc
 
       using FiltersReceived = Signal<void(std::vector<FilterSmall>)>;
       using Selected = Signal<void()>;
+      using NewFilter = Signal<void(uint16_t id)>;
       virtual ~FilterInterface() {}
 
       virtual void addFilter(const Filter &filter) = 0;
@@ -24,6 +25,7 @@ namespace acc
 
       virtual FiltersReceived &filtersReceived() = 0;
       virtual Selected &selected() = 0;
+      virtual NewFilter &newFilter() = 0;
   };
 }
 

@@ -49,11 +49,13 @@ Filter FilterHandler::getSelected()
 
 FilterHandler::FiltersReceived &FilterHandler::filtersReceived() { return m_filtersReceived; }
 FilterHandler::Selected &FilterHandler::selected() { return m_selectedSignal; }
+FilterHandler::NewFilter &FilterHandler::newFilter() { return m_newFilterSignal; }
 
 void FilterHandler::addFilterInternal(const Filter &filter)
 {
   m_filters[++m_currentId] = filter;
   writeFilters();
+  m_newFilterSignal(m_currentId);
 }
 
 void FilterHandler::deleteFilterInternal(uint16_t id)
