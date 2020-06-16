@@ -1,6 +1,7 @@
 #include "ComboBoxMethods.h"
 
 #include <gtkmm/combobox.h>
+#include <string>
 
 #include "ListStore.h"
 
@@ -12,7 +13,7 @@ void addComboData(Gtk::Builder &builder, const std::string &storeName, const int
   for (auto i = start; i <= end; i++)
   {
     gtk_list_store_append(GTK_LIST_STORE(store->gobj()), &iter);
-    gtk_list_store_set(GTK_LIST_STORE(store->gobj()), &iter, 0, i, -1);
+    gtk_list_store_set(GTK_LIST_STORE(store->gobj()), &iter, 0, std::to_string(i).c_str(), -1);
   }
 }
 
