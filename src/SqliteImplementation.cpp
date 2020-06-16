@@ -234,6 +234,7 @@ std::string SqliteImplementation::getQuery(const Filter &filter)
   std::string aMin = (filter.amountMin.length()) ? " AND amount >= ?1" : "";
   std::string aMax = (filter.amountMax.length()) ? " AND amount <= ?2" : "";
 
+  // TODO: remove * from query and replace with column names
   std::stringstream query;
   query << "SELECT * FROM trans "
         << "WHERE name LIKE '%" << pattern << "%'" << dMin << dMax << aMin << aMax;
