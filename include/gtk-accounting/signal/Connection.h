@@ -66,6 +66,8 @@ class ScopedConnection
   {
   }
 
+  ScopedConnection() : connected(false) {}
+
   void disconnect()
   {
     if (connected) destructor();
