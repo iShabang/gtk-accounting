@@ -6,6 +6,7 @@ FilterBox::FilterBox(acc::FilterInterface &filterInterface, Builder &builder)
     : m_builder(builder),
       m_filterConn(filterInterface.filtersReceived().connect(
           [this](const std::vector<acc::FilterSmall> &filters) { onFiltersReceived(filters); })),
+      m_newFilterConn(filterInterface.newFilter().connect([this](uint16_t id){ onNewFilter(id);})),
       m_log("FilterBox"),
       m_filterInterface(filterInterface)
 {
@@ -26,8 +27,7 @@ void FilterBox::onFiltersReceived(const std::vector<acc::FilterSmall> &filters)
   GtkTreeIter iter;
   for (auto &&i : filters)
   {
-    gtk_list_store_append(GTK_LIST_STORE(m_listStore->gobj()), &iter);
-    gtk_list_store_set(GTK_LIST_STORE(m_listStore->gobj()), &iter, 0, i.name.c_str(), 1, i.id, -1);
+    appendFilter(i,iter);
   }
 }
 
@@ -58,4 +58,16 @@ void FilterBox::onChanged()
   g_value_unset(&idValue);
 
   m_filterInterface.selectFilter(id);
+}
+
+void FilterBox::onNewFilter(uint16_t id)
+{
+  (void) id;
+  m_filterInterface.requestFilters();
+}
+
+void FilterBox::appendFilter(const acc::FilterSmall &filter, GtkTreeIter &iter)
+{
+    gtk_list_store_append(GTK_LIST_STORE(m_listStore->gobj()), &iter);
+    gtk_list_store_set(GTK_LIST_STORE(m_listStore->gobj()), &iter, 0, filter.name.c_str(), 1, filter.id, -1);
 }

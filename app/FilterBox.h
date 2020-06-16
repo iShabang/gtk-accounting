@@ -19,14 +19,17 @@ class FilterBox
 
   private:
     void onFiltersReceived(const std::vector<acc::FilterSmall> &filters);
+    void onChanged();
+    void onNewFilter(uint16_t id);
 
   private:
-    void onChanged();
+    void appendFilter(const acc::FilterSmall &filter, GtkTreeIter &iter);
 
   private:
     Builder &m_builder;
     ListStore m_listStore;
     acc::ScopedConnection m_filterConn;
+    acc::ScopedConnection m_newFilterConn;
     acc::LogChannel m_log;
     acc::FilterInterface &m_filterInterface;
 };
