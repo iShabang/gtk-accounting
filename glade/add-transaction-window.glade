@@ -5,19 +5,19 @@
   <object class="GtkListStore" id="dayStore">
     <columns>
       <!-- column-name value -->
-      <column type="guint"/>
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkListStore" id="monthStore">
     <columns>
       <!-- column-name value -->
-      <column type="guint"/>
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkListStore" id="yearStore">
     <columns>
       <!-- column-name value -->
-      <column type="guint"/>
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="addTransactionPopup">
