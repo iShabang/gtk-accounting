@@ -8,7 +8,8 @@ add_executable(gtk-accounting
                AddTransactionPopup.cpp
                FilterWindow.cpp
                FilterBox.cpp
-               ComboBoxMethods.cpp)
+               ComboBoxMethods.cpp
+               EntryMethods.cpp)
 target_include_directories(gtk-accounting PUBLIC ${GTK_INCLUDE_DIRS})
 target_compile_features(gtk-accounting PRIVATE cxx_std_11)
 target_compile_options(gtk-accounting PRIVATE ${MY_COMPILE_FLAGS})
