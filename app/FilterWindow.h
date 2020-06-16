@@ -2,13 +2,14 @@
 #define _GTK_ACCOUNTING_APP_FILTER_WINDOW_H_
 
 #include <gtk-accounting/log/LogChannel.h>
+#include <gtk-accounting/filter/FilterInterface.h>
 #include <gtkmm/builder.h>
 #include <gtkmm/window.h>
 
 class FilterWindow
 {
     public:
-    FilterWindow();
+    FilterWindow(acc::FilterInterface &filter);
 
     FilterWindow(const FilterWindow &) = delete;
     FilterWindow(FilterWindow &&) = delete;
@@ -22,6 +23,7 @@ class FilterWindow
 
     // Signal Handlers
     void onHideWindow();
+    void onSubmit();
 
     // Private helper methods
     void destroy();
@@ -30,6 +32,7 @@ class FilterWindow
     Glib::RefPtr<Gtk::Builder> m_builder;
     Gtk::Window *m_window;
 
+    acc::FilterInterface &m_filterInterface;
     acc::LogChannel m_log;
 };
 
