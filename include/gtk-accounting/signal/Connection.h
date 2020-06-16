@@ -5,8 +5,8 @@
 
 #include "Slot.h"
 
-namespace acc {
-
+namespace acc
+{
 /* Connection
  * A connection describes the relationship between a signal and a connected slot.
  * The use of the Connection object allows easy disconnection as well as a way
@@ -17,7 +17,8 @@ namespace acc {
  *
  */
 template <typename T>
-class Connection {
+class Connection
+{
   using slot_type = Slot<T>;
   using disconnect_func = std::function<void(slot_type)>;
 
@@ -26,8 +27,10 @@ class Connection {
 
   void disconnect() { m_disconnectFunc(m_slot); }
 
-  bool connected() {
-    if (m_disconnectFunc) {
+  bool connected()
+  {
+    if (m_disconnectFunc)
+    {
       return true;
     }
     return false;
@@ -43,23 +46,40 @@ class Connection {
  * managed automatically. If the ScopedConnection goes out of scope, the internal connection object
  * is disconnected.
  *
- * TODO: Add operator= overload and a disconnect method. This will allow more dynamic use of the object in the event that
- * a connection object can dynamically change during the life of the program. The current implementation only allows a 
- * one time connection that cannot be changed without destroying the object and building a new one.
+ * TODO: Add operator= overload and a disconnect method. This will allow more dynamic use of the
+ * object in the event that a connection object can dynamically change during the life of the
+ * program. The current implementation only allows a one time connection that cannot be changed
+ * without destroying the object and building a new one.
  */
-class ScopedConnection {
+class ScopedConnection
+{
  public:
   template <typename T>
-  ScopedConnection(Connection<T> &conn) : destructor([&conn]() { conn.disconnect(); }) {}
+  ScopedConnection(Connection<T> &conn)
+      : destructor([&conn]() { conn.disconnect(); }), connected(true)
+  {
+  }
 
   template <typename T>
   ScopedConnection(std::shared_ptr<Connection<T>> conn)
-      : destructor([conn]() { conn->disconnect(); }) {}
+      : destructor([conn]() { conn->disconnect(); }), connected(true)
+  {
+  }
 
-  ~ScopedConnection() { destructor(); }
+  void disconnect()
+  {
+    if (connected) destructor();
+    connected = false;
+  };
+
+  ~ScopedConnection()
+  {
+    if (connected) destructor();
+  }
 
  private:
   std::function<void()> destructor;
+  bool connected;
 };
 
 }  // namespace acc
