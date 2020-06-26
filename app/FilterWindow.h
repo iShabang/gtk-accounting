@@ -27,6 +27,7 @@ class FilterWindow
 
     // Private helper methods
     void destroy();
+    void getDate(const std::string &prefix, std::string &dest);
 
     private:
     Glib::RefPtr<Gtk::Builder> m_builder;

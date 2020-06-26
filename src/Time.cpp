@@ -78,4 +78,16 @@ DateResult stringToDate(const std::string &dateStr)
   return result;
 }
 
+void addHyphens(std::string &date)
+{
+  if (date.length() != 8)
+  {
+    return;
+  }
+
+  std::stringstream ss;
+  ss << date.substr(0,4) << "-" << date.substr(4,2) << "-" << date.substr(6,2);
+  date = ss.str();
+}
+
 }  // namespace acc

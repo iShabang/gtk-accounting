@@ -45,14 +45,10 @@ void FilterWindow::onSubmit()
 {
 
   std::stringstream ss;
-  ss << getComboText(*m_builder.get(), "startComboYear") << "-" << getComboText(*m_builder.get(), "startComboMonth") << "-" << getComboText(*m_builder.get(), "startComboDay");
 
   acc::Filter filter;
-  filter.dateMin = ss.str();
-
-  ss.str("");
-  ss << getComboText(*m_builder.get(), "endComboYear") << "-" << getComboText(*m_builder.get(), "endComboMonth") << "-" << getComboText(*m_builder.get(), "endComboDay");
-  filter.dateMax = ss.str();
+  getDate("start",filter.dateMin);
+  getDate("end",filter.dateMax);
 
   filter.amountMin = getEntryText(*m_builder.get(), "amountStart");
   filter.amountMax = getEntryText(*m_builder.get(), "amountEnd");
@@ -69,4 +65,15 @@ void FilterWindow::destroy()
 {
   m_builder.reset();
   delete m_window;
+}
+
+void FilterWindow::getDate(const std::string &prefix, std::string &dest)
+{
+  std::stringstream ss;
+  ss << getComboText(*m_builder.get(), prefix+"ComboYear") << getComboText(*m_builder.get(), prefix+"ComboMonth") << getComboText(*m_builder.get(), prefix+"ComboDay");
+  if (ss.str().length() == 8)
+  {
+    dest = ss.str();
+    acc::addHyphens(dest);
+  }
 }

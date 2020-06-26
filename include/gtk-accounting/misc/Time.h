@@ -30,6 +30,9 @@ namespace acc {
   /* Converts the passed string into a Date object. If the YYYY-MM-DD format is not used, then an
    * error is returned in the Result object */
   DateResult stringToDate(const std::string &dateStr);
+
+  /* Add hyphens in-between year, month, and day values */
+  void addHyphens(std::string &date);
 }
 
 #endif // _GTK_ACCOUNTING_TIME_H_
