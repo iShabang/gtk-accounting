@@ -16,7 +16,7 @@ void FilterHandler::writeFilters()
     temp.push_back(i.second);
   }
   FilterWriter writer;
-  writer.write("test.xml", temp);
+  writer.write("filters.xml", temp);
 }
 
 void FilterHandler::addFilter(const Filter &filter)
