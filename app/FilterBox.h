@@ -28,6 +28,7 @@ class FilterBox
   private:
     Builder &m_builder;
     ListStore m_listStore;
+    sigc::connection m_changeConn;
     acc::ScopedConnection m_filterConn;
     acc::ScopedConnection m_newFilterConn;
     acc::LogChannel m_log;

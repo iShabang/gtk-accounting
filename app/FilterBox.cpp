@@ -12,22 +12,24 @@ FilterBox::FilterBox(acc::FilterInterface &filterInterface, Builder &builder)
 {
   m_listStore = ListStore::cast_static(m_builder.getObject("filterStore"));
   filterInterface.requestFilters();
-  Gtk::ComboBox *combo = nullptr;
-  m_builder.getWidget("filterCombo",combo);
-
-  if (combo)
-  {
-    combo->signal_changed().connect([this](){ onChanged(); });
-  }
 }
 
 void FilterBox::onFiltersReceived(const std::vector<acc::FilterSmall> &filters)
 {
+  Gtk::ComboBox *combo = nullptr;
+  m_builder.getWidget("filterCombo",combo);
+  m_changeConn.disconnect();
+
   m_listStore->clear();
   GtkTreeIter iter;
   for (auto &&i : filters)
   {
     appendFilter(i,iter);
+  }
+
+  if (combo)
+  {
+    m_changeConn = combo->signal_changed().connect([this](){ onChanged(); });
   }
 }
 
