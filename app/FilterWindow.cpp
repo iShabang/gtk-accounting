@@ -4,6 +4,7 @@
 #include <gtk-accounting/misc/Time.h>
 #include <gtkmm/button.h>
 #include <sstream>
+#include <iomanip>
 
 #include "ComboBoxMethods.h"
 #include "EntryMethods.h"
@@ -69,8 +70,21 @@ void FilterWindow::destroy()
 
 void FilterWindow::getDate(const std::string &prefix, std::string &dest)
 {
+  std::string year = getComboText(*m_builder.get(), prefix+"ComboYear");
+  std::string month = getComboText(*m_builder.get(), prefix+"ComboMonth");
+  std::string day = getComboText(*m_builder.get(), prefix+"ComboDay");
+
+  if (!year.length() || !month.length() || !day.length())
+  {
+    return;
+  }
+
   std::stringstream ss;
-  ss << getComboText(*m_builder.get(), prefix+"ComboYear") << getComboText(*m_builder.get(), prefix+"ComboMonth") << getComboText(*m_builder.get(), prefix+"ComboDay");
+  ss << year;
+  ss << std::setfill('0') << std::right;
+  ss << std::setw(2) << month;
+  ss << std::setw(2) << day;
+
   if (ss.str().length() == 8)
   {
     dest = ss.str();
