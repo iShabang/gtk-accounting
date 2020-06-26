@@ -20,11 +20,18 @@ void FilterWindow::show()
   addComboData(*m_builder.get(), "dayStore", 1, 31);
   addComboData(*m_builder.get(), "yearStore", curDate.year - 20, curDate.year);
 
-  Gtk::Button *submit = nullptr;
-  m_builder->get_widget("submitButton", submit);
-  if (submit)
+  Gtk::Button *button = nullptr;
+  m_builder->get_widget("submitButton", button);
+  if (button)
   {
-    submit->signal_clicked().connect([this]() { onSubmit(); });
+    button->signal_clicked().connect([this]() { onSubmit(); });
+  }
+
+  //TODO: Move button signal connection to separate function.
+  m_builder->get_widget("cancelButton", button);
+  if (button)
+  {
+    button->signal_clicked().connect([this](){onHideWindow();});
   }
 
   m_builder->get_widget("mainWindow", m_window);
@@ -54,6 +61,7 @@ void FilterWindow::onSubmit()
   filter.name = getEntryText(*m_builder.get(), "nameEntry");
 
   m_filterInterface.addFilter(filter);
+  destroy();
 }
 
 
